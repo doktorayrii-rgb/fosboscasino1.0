@@ -1,0 +1,2925 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Oswald:wght@400;500;600;700&display=swap');
+
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --gold:#d4a843;--gold2:#f0c060;--gold3:#ffe08a;
+  --deep:#06040f;--panel:#0e0b1e;--card:#14102a;--card2:#1a1535;
+  --red:#c0392b;--red2:#e74c3c;--green:#1a8a4a;--green2:#27ae60;
+  --border:#2a2050;--neon:#7c3aed;
+}
+body{background:var(--deep);font-family:'Montserrat',sans-serif;color:#fff;}
+.app{min-height:100vh;}
+
+/* ── AUTH ── */
+.auth-wrap{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  background:var(--deep);position:relative;overflow:hidden;padding:1rem;
+}
+.auth-wrap::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(124,58,237,0.18) 0%,transparent 70%),
+             radial-gradient(ellipse 60% 40% at 0% 100%,rgba(212,168,67,0.10) 0%,transparent 60%);
+  pointer-events:none;
+}
+.auth-deco{position:absolute;font-size:5rem;opacity:0.04;pointer-events:none;user-select:none;}
+.auth-deco.tl{top:2rem;left:2rem;} 
+.auth-deco.tr{top:2rem;right:2rem;}
+.auth-deco.bl{bottom:2rem;left:2rem;}
+.auth-deco.br{bottom:2rem;right:2rem;}
+
+.auth-card{
+  width:100%;max-width:420px;position:relative;z-index:1;
+  background:var(--panel);
+  border:1px solid rgba(212,168,67,0.3);
+  border-radius:4px;
+  overflow:hidden;
+}
+.auth-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,#7c3aed,var(--gold),#7c3aed);
+}
+
+.auth-header{
+  padding:2rem 2rem 1rem;text-align:center;
+  background:linear-gradient(180deg,rgba(124,58,237,0.15) 0%,transparent 100%);
+  border-bottom:1px solid var(--border);
+}
+.auth-logo-main{
+  font-family:'Oswald',sans-serif;font-size:2.8rem;font-weight:700;
+  letter-spacing:4px;line-height:1;margin-bottom:4px;
+}
+.auth-logo-main .red{color:var(--red2);}
+.auth-logo-main .gold{color:var(--gold2);}
+.auth-logo-stars{color:var(--gold);font-size:1.1rem;letter-spacing:8px;margin-bottom:6px;}
+.auth-tagline{font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:3px;text-transform:uppercase;}
+
+.bonus-strip{
+  background:linear-gradient(90deg,rgba(26,138,74,0.2),rgba(26,138,74,0.35),rgba(26,138,74,0.2));
+  border-top:1px solid rgba(39,174,96,0.3);border-bottom:1px solid rgba(39,174,96,0.3);
+  padding:10px 1.5rem;display:flex;align-items:center;gap:10px;
+  font-size:12px;font-weight:700;letter-spacing:0.5px;
+}
+.bonus-strip .bonus-icon{font-size:1.4rem;}
+.bonus-strip .bonus-text{color:rgba(255,255,255,0.7);}
+.bonus-strip .bonus-amt{color:var(--gold2);font-size:14px;}
+
+.auth-tabs{display:flex;border-bottom:1px solid var(--border);}
+.auth-tab{
+  flex:1;padding:12px;background:none;border:none;
+  font-family:'Oswald',sans-serif;font-size:14px;font-weight:600;
+  letter-spacing:2px;text-transform:uppercase;cursor:pointer;color:rgba(255,255,255,0.35);
+  border-bottom:2px solid transparent;transition:all 0.2s;
+}
+.auth-tab.active{color:var(--gold2);border-bottom-color:var(--gold2);}
+
+.auth-body{padding:1.5rem;}
+.field-group{margin-bottom:1rem;}
+.field-label{
+  display:block;font-size:10px;font-weight:700;letter-spacing:2px;
+  text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:6px;
+}
+.field-input{
+  width:100%;background:rgba(0,0,0,0.4);border:1px solid var(--border);
+  border-radius:2px;color:#fff;font-family:'Montserrat',sans-serif;font-size:14px;
+  padding:11px 14px;outline:none;transition:border-color 0.2s;
+}
+.field-input:focus{border-color:var(--gold);box-shadow:0 0 0 2px rgba(212,168,67,0.1);}
+.field-input::placeholder{color:rgba(255,255,255,0.2);}
+.field-row{display:flex;gap:10px;}
+.field-row .field-group{flex:1;}
+.pw-wrap{position:relative;}
+.pw-toggle{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,0.3);cursor:pointer;font-size:16px;padding:0;}
+.pw-toggle:hover{color:rgba(255,255,255,0.7);}
+
+.auth-error{background:rgba(192,57,43,0.15);border:1px solid rgba(231,76,60,0.4);border-radius:2px;padding:10px 14px;font-size:12px;color:#e74c3c;margin-bottom:1rem;display:none;font-weight:600;letter-spacing:0.5px;}
+.auth-error.show{display:block;}
+.auth-success{background:rgba(26,138,74,0.15);border:1px solid rgba(39,174,96,0.4);border-radius:2px;padding:10px 14px;font-size:12px;color:#27ae60;margin-bottom:1rem;display:none;font-weight:600;}
+.auth-success.show{display:block;}
+
+.strength-bar{height:3px;background:rgba(255,255,255,0.08);border-radius:1px;margin-top:6px;overflow:hidden;}
+.strength-fill{height:100%;width:0;border-radius:1px;transition:width 0.3s,background 0.3s;}
+
+.btn-primary{
+  width:100%;border:none;cursor:pointer;padding:14px;
+  background:linear-gradient(135deg,#b8860b,var(--gold2),#b8860b);
+  color:#1a1000;font-family:'Oswald',sans-serif;font-size:1.1rem;
+  font-weight:700;letter-spacing:3px;text-transform:uppercase;
+  border-radius:2px;transition:opacity 0.2s,transform 0.1s;position:relative;overflow:hidden;
+}
+.btn-primary::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 40%,rgba(255,255,255,0.15) 50%,transparent 60%);transform:translateX(-100%);transition:transform 0.4s;}
+.btn-primary:hover::before{transform:translateX(100%);}
+.btn-primary:hover{opacity:0.92;}
+.btn-primary:active{transform:scale(0.98);}
+
+.social-btns{display:flex;gap:8px;margin-bottom:1rem;}
+.social-btn{
+  flex:1;background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:2px;
+  color:rgba(255,255,255,0.6);font-family:'Montserrat',sans-serif;font-size:12px;
+  font-weight:700;padding:10px;cursor:pointer;transition:border-color 0.2s,color 0.2s;letter-spacing:0.5px;
+}
+.social-btn:hover{border-color:rgba(212,168,67,0.5);color:#fff;}
+.auth-divider{display:flex;align-items:center;gap:10px;margin:1rem 0;font-size:10px;letter-spacing:2px;color:rgba(255,255,255,0.2);text-transform:uppercase;}
+.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--border);}
+.forgot-link{text-align:center;margin-top:1rem;font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:0.5px;}
+.forgot-link a{color:var(--gold);cursor:pointer;}
+.terms-row{display:flex;align-items:flex-start;gap:8px;margin-bottom:1rem;font-size:11px;color:rgba(255,255,255,0.35);line-height:1.5;}
+.terms-row input{margin-top:2px;accent-color:var(--gold);flex-shrink:0;}
+.terms-row a{color:var(--gold);}
+.age-note{text-align:center;font-size:10px;color:rgba(255,255,255,0.2);letter-spacing:1px;margin-top:1rem;}
+.hint-text{font-size:11px;color:rgba(255,255,255,0.25);margin-top:1rem;text-align:center;letter-spacing:0.5px;}
+
+/* ── CASINO APP ── */
+.casino-app{background:var(--deep);min-height:100vh;display:none;}
+
+/* TOP NAV */
+.top-nav{
+  background:var(--panel);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;padding:0 1rem;height:60px;position:relative;
+}
+.top-nav::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(212,168,67,0.4),transparent);}
+.nav-logo{font-family:'Oswald',sans-serif;font-size:1.6rem;font-weight:700;letter-spacing:3px;white-space:nowrap;}
+.nav-logo .r{color:var(--red2);}
+.nav-logo .g{color:var(--gold2);}
+.nav-links{display:flex;gap:0;margin:0 1.5rem;flex:1;height:100%;}
+.nav-link{
+  display:flex;align-items:center;padding:0 14px;font-family:'Oswald',sans-serif;
+  font-size:13px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;
+  color:rgba(255,255,255,0.4);cursor:pointer;border-bottom:2px solid transparent;
+  transition:all 0.2s;height:100%;white-space:nowrap;background:none;border-left:none;border-right:none;border-top:none;
+}
+.nav-link:hover{color:rgba(255,255,255,0.8);}
+.nav-link.active{color:#fff;border-bottom-color:var(--gold2);}
+.nav-right{display:flex;align-items:center;gap:10px;margin-left:auto;}
+.balance-chip{
+  background:rgba(0,0,0,0.4);border:1px solid rgba(212,168,67,0.4);
+  border-radius:3px;padding:6px 14px;display:flex;align-items:center;gap:8px;
+}
+.balance-label{font-size:9px;font-weight:700;letter-spacing:2px;color:rgba(255,255,255,0.3);text-transform:uppercase;}
+.balance-val{font-family:'Oswald',sans-serif;font-size:1rem;font-weight:600;color:var(--gold2);letter-spacing:1px;}
+.deposit-btn{
+  background:#3a1a1a;border:1px solid rgba(192,57,43,0.5);color:rgba(255,255,255,0.35);
+  font-family:'Oswald',sans-serif;font-size:13px;font-weight:600;
+  letter-spacing:1.5px;text-transform:uppercase;padding:8px 16px;
+  border-radius:2px;cursor:not-allowed;white-space:nowrap;opacity:0.5;
+}
+
+/* ── LOANSHARK ── */
+.ls-modal-bg{
+  position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:99000;
+  display:flex;align-items:center;justify-content:center;padding:1rem;
+}
+.ls-modal{
+  background:#0c0812;border:2px solid rgba(192,57,43,0.7);border-radius:6px;
+  max-width:480px;width:100%;position:relative;overflow:hidden;
+  box-shadow:0 0 60px rgba(192,57,43,0.3),inset 0 0 40px rgba(0,0,0,0.5);
+}
+.ls-modal::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#7c1a1a,#c0392b,#7c1a1a);}
+.ls-header{
+  padding:1.5rem 1.5rem 1rem;text-align:center;
+  background:linear-gradient(180deg,rgba(192,57,43,0.15),transparent);
+  border-bottom:1px solid rgba(192,57,43,0.2);
+}
+.ls-avatar{font-size:4rem;margin-bottom:8px;filter:grayscale(0.3);}
+.ls-name{font-family:'Oswald',sans-serif;font-size:1.8rem;font-weight:700;letter-spacing:3px;color:#c0392b;text-transform:uppercase;}
+.ls-subtitle{font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:2px;text-transform:uppercase;margin-top:2px;}
+.ls-body{padding:1.5rem;}
+.ls-quote{
+  font-size:13px;color:rgba(255,255,255,0.6);line-height:1.6;font-style:italic;
+  border-left:3px solid rgba(192,57,43,0.5);padding-left:12px;margin-bottom:1.2rem;
+}
+.ls-offers{display:grid;gap:10px;margin-bottom:1.2rem;}
+.ls-offer{
+  background:rgba(192,57,43,0.08);border:1px solid rgba(192,57,43,0.3);border-radius:4px;
+  padding:12px 14px;cursor:pointer;transition:all 0.2s;position:relative;
+}
+.ls-offer:hover{background:rgba(192,57,43,0.18);border-color:rgba(192,57,43,0.6);transform:translateX(4px);}
+.ls-offer-amount{font-family:'Oswald',sans-serif;font-size:1.3rem;font-weight:700;color:var(--gold2);letter-spacing:1px;}
+.ls-offer-detail{font-size:11px;color:rgba(255,255,255,0.4);margin-top:3px;line-height:1.5;}
+.ls-offer-danger{font-size:10px;color:#e74c3c;font-weight:700;margin-top:4px;letter-spacing:0.5px;}
+.ls-warn{font-size:11px;color:rgba(255,100,100,0.6);text-align:center;line-height:1.5;padding:10px;border:1px solid rgba(192,57,43,0.2);border-radius:3px;background:rgba(192,57,43,0.05);}
+.ls-skip{width:100%;background:none;border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.25);font-family:'Montserrat',sans-serif;font-size:11px;padding:8px;border-radius:2px;cursor:pointer;margin-top:8px;letter-spacing:0.5px;}
+.ls-skip:hover{color:rgba(255,255,255,0.4);border-color:rgba(255,255,255,0.2);}
+
+/* ── DEBT TIMER BAR ── */
+.debt-bar{
+  background:rgba(192,57,43,0.12);border-bottom:1px solid rgba(192,57,43,0.3);
+  padding:6px 1.5rem;display:flex;align-items:center;gap:1rem;
+  animation:debtPulse 2s ease-in-out infinite;display:none;
+}
+@keyframes debtPulse{0%,100%{background:rgba(192,57,43,0.12);}50%{background:rgba(192,57,43,0.22);}}
+.debt-bar.urgent{animation:debtUrgent 0.6s ease-in-out infinite;}
+@keyframes debtUrgent{0%,100%{background:rgba(192,57,43,0.25);}50%{background:rgba(192,57,43,0.5);}}
+.debt-icon{font-size:1.2rem;flex-shrink:0;}
+.debt-info{flex:1;}
+.debt-label{font-size:9px;font-weight:800;letter-spacing:2px;color:rgba(255,100,100,0.7);text-transform:uppercase;}
+.debt-amount{font-family:'Oswald',sans-serif;font-size:1rem;font-weight:700;color:#e74c3c;letter-spacing:1px;}
+.debt-timer{font-family:'Oswald',sans-serif;font-size:1.4rem;font-weight:700;color:#fff;letter-spacing:2px;text-align:right;}
+.debt-timer.red{color:#e74c3c;}
+.debt-timer.blink{animation:timerBlink 0.4s steps(1) infinite;}
+@keyframes timerBlink{0%,100%{opacity:1;}50%{opacity:0;}}
+.debt-repay-btn{
+  background:linear-gradient(135deg,#7c1a1a,#c0392b);border:none;color:#fff;
+  font-family:'Oswald',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;
+  padding:6px 14px;border-radius:2px;cursor:pointer;text-transform:uppercase;
+  white-space:nowrap;transition:opacity 0.2s;
+}
+.debt-repay-btn:hover{opacity:0.85;}
+
+/* ── GAME OVER SCREEN ── */
+.gameover-screen{
+  position:fixed;inset:0;background:#000;z-index:999999;
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;padding:2rem;text-align:center;
+}
+.go-skull{font-size:6rem;animation:goSpin 1s ease-out forwards;}
+@keyframes goSpin{from{transform:scale(0) rotate(-180deg);opacity:0;}to{transform:scale(1) rotate(0);opacity:1;}}
+.go-title{font-family:'Oswald',sans-serif;font-size:3rem;font-weight:900;color:#c0392b;letter-spacing:4px;text-transform:uppercase;margin:1rem 0 0.5rem;text-shadow:0 0 30px rgba(192,57,43,0.8);}
+.go-sub{font-size:14px;color:rgba(255,255,255,0.5);letter-spacing:1px;max-width:400px;line-height:1.7;margin-bottom:1.5rem;}
+.go-debt-info{background:rgba(192,57,43,0.1);border:1px solid rgba(192,57,43,0.4);border-radius:4px;padding:1rem 2rem;margin-bottom:1.5rem;}
+.go-debt-label{font-size:10px;letter-spacing:2px;color:rgba(255,100,100,0.6);text-transform:uppercase;margin-bottom:4px;}
+.go-debt-amt{font-family:'Oswald',sans-serif;font-size:2rem;font-weight:700;color:#e74c3c;}
+.go-msg{font-size:12px;color:rgba(255,255,255,0.3);font-style:italic;margin-bottom:1.5rem;line-height:1.6;max-width:420px;}
+.go-restart{
+  background:linear-gradient(135deg,#b8860b,var(--gold2));border:none;color:#1a1000;
+  font-family:'Oswald',sans-serif;font-size:1rem;font-weight:700;letter-spacing:3px;
+  padding:14px 40px;border-radius:2px;cursor:pointer;text-transform:uppercase;
+  transition:opacity 0.2s;
+}
+.go-restart:hover{opacity:0.85;}
+.user-btn{
+  display:flex;align-items:center;gap:8px;background:rgba(0,0,0,0.3);
+  border:1px solid var(--border);border-radius:3px;padding:6px 12px;
+  cursor:pointer;transition:border-color 0.2s;position:relative;
+}
+.user-btn:hover{border-color:rgba(212,168,67,0.4);}
+.user-av{
+  width:28px;height:28px;border-radius:50%;
+  background:linear-gradient(135deg,#7c3aed,#a855f7);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;color:#fff;
+}
+.user-nm{font-family:'Oswald',sans-serif;font-size:13px;font-weight:500;letter-spacing:1px;color:rgba(255,255,255,0.8);}
+.user-caret{color:rgba(255,255,255,0.3);font-size:10px;}
+.user-dropdown{
+  position:absolute;top:calc(100% + 8px);right:0;
+  background:var(--card2);border:1px solid var(--border);border-radius:4px;
+  min-width:180px;z-index:999;display:none;overflow:hidden;
+}
+.user-dropdown.open{display:block;}
+.ud-header{padding:12px 14px;border-bottom:1px solid var(--border);font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:1px;text-transform:uppercase;}
+.ud-item{
+  display:flex;align-items:center;gap:10px;width:100%;padding:11px 14px;
+  background:none;border:none;color:rgba(255,255,255,0.7);font-family:'Montserrat',sans-serif;
+  font-size:12px;font-weight:600;cursor:pointer;text-align:left;
+  border-bottom:1px solid rgba(42,32,80,0.5);transition:background 0.15s;
+}
+.ud-item:hover{background:rgba(124,58,237,0.1);color:#fff;}
+.ud-item.danger{color:#e74c3c;}
+.ud-item.danger:hover{background:rgba(231,76,60,0.1);}
+
+/* PROMO BANNER */
+.promo-bar{
+  background:linear-gradient(90deg,rgba(124,58,237,0.3),rgba(192,57,43,0.3),rgba(212,168,67,0.2));
+  border-bottom:1px solid var(--border);padding:10px 1.5rem;
+  display:flex;align-items:center;gap:2rem;overflow:hidden;
+}
+.promo-item{display:flex;align-items:center;gap:8px;white-space:nowrap;flex-shrink:0;}
+.promo-icon{font-size:1.1rem;}
+.promo-text{font-size:12px;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:0.5px;}
+.promo-text strong{color:var(--gold2);}
+.promo-sep{color:var(--border);font-size:1.2rem;}
+
+/* LIVE TICKER */
+.live-ticker{
+  background:rgba(0,0,0,0.3);border-bottom:1px solid var(--border);
+  padding:8px 1.5rem;display:flex;align-items:center;gap:1rem;
+}
+.live-badge{background:var(--red2);color:#fff;font-size:9px;font-weight:800;
+  letter-spacing:2px;padding:3px 8px;border-radius:2px;text-transform:uppercase;flex-shrink:0;}
+.ticker-scroll{display:flex;gap:2rem;overflow:hidden;flex:1;}
+.tick{display:flex;align-items:center;gap:6px;font-size:12px;white-space:nowrap;flex-shrink:0;}
+.tick-name{color:var(--gold);font-weight:700;}
+.tick-txt{color:rgba(255,255,255,0.4);}
+.tick-amt{color:#27ae60;font-weight:700;}
+
+/* SIDEBAR + MAIN */
+.layout{display:flex;min-height:calc(100vh - 60px);}
+.sidebar{
+  width:200px;flex-shrink:0;background:var(--panel);
+  border-right:1px solid var(--border);padding:1rem 0;
+}
+.sb-section{font-size:9px;font-weight:800;letter-spacing:2px;color:rgba(255,255,255,0.2);
+  text-transform:uppercase;padding:0 1rem;margin:1rem 0 0.5rem;}
+.sb-item{
+  display:flex;align-items:center;gap:10px;width:100%;padding:9px 1rem;
+  background:none;border:none;color:rgba(255,255,255,0.5);font-family:'Montserrat',sans-serif;
+  font-size:12px;font-weight:600;cursor:pointer;text-align:left;letter-spacing:0.3px;
+  transition:all 0.15s;border-left:2px solid transparent;
+}
+.sb-item:hover{background:rgba(124,58,237,0.1);color:#fff;}
+.sb-item.active{background:rgba(124,58,237,0.15);color:#fff;border-left-color:var(--gold2);}
+.sb-item .sb-icon{font-size:1rem;width:20px;text-align:center;}
+.sb-badge{margin-left:auto;background:var(--red2);color:#fff;font-size:9px;
+  font-weight:800;padding:1px 6px;border-radius:2px;letter-spacing:1px;}
+
+.main{flex:1;overflow:hidden;}
+
+/* JACKPOT SECTION */
+.jackpot-section{
+  background:linear-gradient(135deg,rgba(20,10,40,0.95),rgba(10,5,25,0.98));
+  border-bottom:1px solid var(--border);padding:1.5rem;
+  display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;
+}
+.jp-card{
+  flex:1;min-width:160px;background:rgba(0,0,0,0.4);border:1px solid rgba(212,168,67,0.2);
+  border-radius:4px;padding:14px 18px;position:relative;overflow:hidden;
+}
+.jp-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.jp-card.mega::before{background:linear-gradient(90deg,#7c3aed,#a855f7);}
+.jp-card.major::before{background:linear-gradient(90deg,var(--gold),var(--gold2));}
+.jp-card.minor::before{background:linear-gradient(90deg,var(--green),var(--green2));}
+.jp-card.mini::before{background:linear-gradient(90deg,var(--red),var(--red2));}
+.jp-tier{font-size:9px;font-weight:800;letter-spacing:3px;text-transform:uppercase;margin-bottom:4px;}
+.jp-card.mega .jp-tier{color:#a855f7;}
+.jp-card.major .jp-tier{color:var(--gold2);}
+.jp-card.minor .jp-tier{color:var(--green2);}
+.jp-card.mini .jp-tier{color:var(--red2);}
+.jp-amt{font-family:'Oswald',sans-serif;font-size:1.5rem;font-weight:700;color:var(--gold2);letter-spacing:1px;line-height:1;}
+.jp-sub{font-size:10px;color:rgba(255,255,255,0.3);margin-top:4px;letter-spacing:0.5px;}
+.jp-play-btn{
+  background:linear-gradient(135deg,#7c3aed,#a855f7);border:none;color:#fff;
+  font-family:'Oswald',sans-serif;font-size:13px;font-weight:600;letter-spacing:2px;
+  padding:10px 24px;border-radius:2px;cursor:pointer;white-space:nowrap;transition:opacity 0.2s;
+  text-transform:uppercase;
+}
+.jp-play-btn:hover{opacity:0.85;}
+
+/* CATEGORIES */
+.cat-bar{
+  display:flex;gap:0;padding:0 1.5rem;background:var(--card);
+  border-bottom:1px solid var(--border);overflow-x:auto;
+}
+.cat-btn{
+  display:flex;align-items:center;gap:8px;padding:12px 16px;
+  background:none;border:none;color:rgba(255,255,255,0.35);font-family:'Montserrat',sans-serif;
+  font-size:12px;font-weight:700;cursor:pointer;border-bottom:2px solid transparent;
+  transition:all 0.2s;white-space:nowrap;letter-spacing:0.5px;
+}
+.cat-btn:hover{color:rgba(255,255,255,0.7);}
+.cat-btn.active{color:#fff;border-bottom-color:var(--gold2);}
+.cat-icon{font-size:1rem;}
+
+/* GAME GRID */
+.game-section{padding:1.5rem;}
+.game-section-title{
+  font-family:'Oswald',sans-serif;font-size:1.1rem;font-weight:600;letter-spacing:2px;
+  text-transform:uppercase;color:rgba(255,255,255,0.8);margin-bottom:1rem;
+  display:flex;align-items:center;gap:12px;
+}
+.game-section-title::after{content:'';flex:1;height:1px;background:var(--border);}
+.game-section-title .title-accent{color:var(--gold2);}
+.games-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:12px;}
+.g-card{
+  background:var(--card);border:1px solid var(--border);border-radius:4px;
+  overflow:hidden;cursor:pointer;position:relative;
+  transition:transform 0.2s,border-color 0.2s;
+}
+.g-card:hover{transform:translateY(-4px);border-color:rgba(212,168,67,0.5);}
+.g-thumb{height:120px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.g-thumb-inner{font-size:3.2rem;position:relative;z-index:1;}
+.gt-purple{background:linear-gradient(145deg,#1a0d35,#2e1060);}
+.gt-blue{background:linear-gradient(145deg,#050d28,#0d2060);}
+.gt-green{background:linear-gradient(145deg,#051a0d,#0a3518);}
+.gt-red{background:linear-gradient(145deg,#200505,#450a0a);}
+.gt-gold{background:linear-gradient(145deg,#201005,#453005);}
+.gt-teal{background:linear-gradient(145deg,#051a1a,#0a3530);}
+.g-overlay{
+  position:absolute;inset:0;background:rgba(0,0,0,0.75);
+  display:none;align-items:center;justify-content:center;flex-direction:column;gap:8px;z-index:2;
+}
+.g-card:hover .g-overlay{display:flex;}
+.g-play{
+  background:var(--gold2);color:#1a1000;border:none;
+  font-family:'Oswald',sans-serif;font-size:14px;font-weight:700;
+  letter-spacing:2px;padding:9px 24px;border-radius:2px;cursor:pointer;
+  text-transform:uppercase;width:80%;transition:background 0.15s;
+}
+.g-play:hover{background:var(--gold3);}
+.g-demo{
+  background:transparent;color:rgba(255,255,255,0.6);border:1px solid rgba(255,255,255,0.2);
+  font-family:'Oswald',sans-serif;font-size:11px;font-weight:600;
+  letter-spacing:2px;padding:6px 24px;border-radius:2px;cursor:pointer;
+  text-transform:uppercase;width:80%;
+}
+.badge{position:absolute;top:8px;right:8px;font-size:9px;font-weight:800;
+  padding:3px 7px;border-radius:2px;letter-spacing:1px;text-transform:uppercase;z-index:3;}
+.badge-hot{background:var(--red2);color:#fff;}
+.badge-new{background:var(--green2);color:#fff;}
+.badge-top{background:var(--gold);color:#1a1000;}
+.g-info{padding:10px 12px;background:var(--card);}
+.g-name{font-size:13px;font-weight:700;color:#fff;margin-bottom:3px;letter-spacing:0.3px;}
+.g-meta{display:flex;align-items:center;gap:8px;}
+.g-provider{font-size:10px;color:rgba(255,255,255,0.25);letter-spacing:0.5px;}
+.g-rtp{font-size:10px;font-weight:700;color:var(--green2);margin-left:auto;letter-spacing:0.5px;}
+
+/* VIP LOCK */
+.g-card.locked{cursor:not-allowed;}
+.g-card.locked:hover{transform:none;border-color:rgba(124,58,237,0.5);}
+.g-lock-overlay{position:absolute;inset:0;background:rgba(6,4,15,0.82);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10;gap:4px;pointer-events:none;}
+.g-lock-icon{font-size:2rem;filter:drop-shadow(0 0 8px rgba(124,58,237,0.8));}
+.g-lock-label{font-family:'Oswald',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;color:#a855f7;text-transform:uppercase;text-align:center;line-height:1.3;padding:0 6px;}
+.badge-locked{background:linear-gradient(135deg,#5b21b6,#7c3aed);color:#fff;}
+.vip-lock-toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--card2);border:1px solid rgba(124,58,237,0.6);border-radius:6px;padding:1.8rem 2.2rem;z-index:99999;text-align:center;box-shadow:0 0 60px rgba(124,58,237,0.4);min-width:280px;animation:popIn 0.25s cubic-bezier(0.34,1.56,0.64,1);}
+@keyframes popIn{from{transform:translate(-50%,-50%) scale(0.7);opacity:0;}to{transform:translate(-50%,-50%) scale(1);opacity:1;}}
+.vip-lock-toast::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#7c3aed,#a855f7,#7c3aed);}
+.vlt-icon{font-size:2.5rem;margin-bottom:10px;}
+.vlt-title{font-family:'Oswald',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:2px;color:#a855f7;text-transform:uppercase;margin-bottom:6px;}
+.vlt-text{font-size:12px;color:rgba(255,255,255,0.5);line-height:1.5;margin-bottom:14px;letter-spacing:0.3px;}
+.vlt-close{background:linear-gradient(135deg,#5b21b6,#7c3aed);border:none;color:#fff;font-family:'Oswald',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;padding:9px 28px;border-radius:2px;cursor:pointer;text-transform:uppercase;}
+
+/* SLOT MODAL */
+.s-modal{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);
+  z-index:9999;align-items:center;justify-content:center;padding:1rem;
+}
+.s-modal.open{display:flex;}
+.s-inner{
+  background:var(--panel);border:1px solid rgba(212,168,67,0.3);border-radius:6px;
+  width:100%;max-width:500px;position:relative;overflow:hidden;
+}
+.s-inner::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,#7c3aed,var(--gold2),var(--red2));}
+.s-header{
+  padding:1.2rem 1.5rem;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.s-title{font-family:'Oswald',sans-serif;font-size:1.3rem;font-weight:700;letter-spacing:2px;color:var(--gold2);text-transform:uppercase;}
+.s-close{background:none;border:none;color:rgba(255,255,255,0.3);font-size:20px;cursor:pointer;line-height:1;}
+.s-close:hover{color:#fff;}
+.s-meta{display:flex;gap:1.5rem;padding:0.8rem 1.5rem;background:rgba(0,0,0,0.3);border-bottom:1px solid var(--border);}
+.s-meta-item{font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:1px;}
+.s-meta-item strong{color:#fff;font-size:12px;}
+.s-meta-item .green{color:var(--green2);}
+.s-body{padding:1.5rem;}
+.reel-wrap{
+  background:rgba(0,0,0,0.5);border:1px solid rgba(212,168,67,0.2);
+  border-radius:4px;padding:16px;display:flex;gap:8px;justify-content:center;
+  margin-bottom:1rem;position:relative;
+}
+.reel-win-line{
+  position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);
+  height:80px;border-top:1px solid rgba(212,168,67,0.3);border-bottom:1px solid rgba(212,168,67,0.3);
+  pointer-events:none;
+}
+.reel{width:74px;height:80px;overflow:hidden;border-radius:3px;background:rgba(0,0,0,0.3);}
+.reel-strip{display:flex;flex-direction:column;}
+.reel-strip.spin{animation:spinR 0.07s linear infinite;}
+@keyframes spinR{0%{transform:translateY(0);}100%{transform:translateY(-80px);}}
+.sym{width:74px;height:80px;display:flex;align-items:center;justify-content:center;font-size:2.5rem;flex-shrink:0;}
+.win-msg{
+  text-align:center;font-family:'Oswald',sans-serif;font-size:1.6rem;font-weight:700;
+  letter-spacing:3px;min-height:2.2rem;margin-bottom:1rem;text-transform:uppercase;
+}
+.win-msg.win-big{color:var(--gold2);animation:glow 0.5s ease-in-out 5;}
+.win-msg.win-sm{color:var(--green2);}
+.win-msg.no-win{color:rgba(255,255,255,0.2);font-size:12px;font-family:'Montserrat',sans-serif;letter-spacing:1px;font-weight:600;}
+@keyframes glow{0%,100%{text-shadow:none;}50%{text-shadow:0 0 30px rgba(240,192,96,0.9);}}
+
+.bet-section{margin-bottom:1rem;}
+.bet-label-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.bet-label-txt{font-size:10px;font-weight:700;letter-spacing:2px;color:rgba(255,255,255,0.3);text-transform:uppercase;}
+.bet-total{font-size:12px;color:var(--gold);font-weight:700;letter-spacing:1px;}
+.bet-chips{display:flex;gap:6px;flex-wrap:wrap;}
+.bet-chip{
+  background:rgba(0,0,0,0.4);border:1px solid var(--border);border-radius:50px;
+  color:rgba(255,255,255,0.5);font-family:'Montserrat',sans-serif;font-size:12px;
+  font-weight:700;padding:6px 14px;cursor:pointer;transition:all 0.15s;
+}
+.bet-chip:hover{border-color:rgba(212,168,67,0.5);color:#fff;}
+.bet-chip.active{background:rgba(212,168,67,0.15);border-color:var(--gold2);color:var(--gold2);}
+
+.spin-row{display:flex;gap:10px;margin-bottom:1rem;}
+.spin-btn{
+  flex:1;background:linear-gradient(135deg,#b8860b,var(--gold2));border:none;
+  color:#1a1000;font-family:'Oswald',sans-serif;font-size:1.1rem;font-weight:700;
+  letter-spacing:3px;padding:13px;border-radius:3px;cursor:pointer;
+  transition:opacity 0.2s,transform 0.1s;text-transform:uppercase;
+}
+.spin-btn:hover{opacity:0.9;}
+.spin-btn:active{transform:scale(0.98);}
+.spin-btn:disabled{opacity:0.3;cursor:not-allowed;}
+.auto-btn{
+  background:rgba(0,0,0,0.4);border:1px solid var(--border);color:rgba(255,255,255,0.4);
+  font-family:'Oswald',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;
+  padding:13px 14px;border-radius:3px;cursor:pointer;transition:all 0.2s;text-transform:uppercase;
+}
+.auto-btn:hover{border-color:rgba(212,168,67,0.4);color:rgba(255,255,255,0.8);}
+.auto-btn.on{border-color:var(--gold2);color:var(--gold2);background:rgba(212,168,67,0.08);}
+
+.pt-toggle{
+  background:none;border:1px solid var(--border);color:rgba(255,255,255,0.3);
+  font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;
+  padding:5px 14px;border-radius:2px;cursor:pointer;text-transform:uppercase;transition:all 0.2s;
+}
+.pt-toggle:hover{border-color:rgba(255,255,255,0.3);color:rgba(255,255,255,0.6);}
+.paytab{display:none;margin-top:1rem;background:rgba(0,0,0,0.3);border-radius:3px;padding:12px;}
+.paytab.open{display:block;}
+.pt-head{font-size:9px;font-weight:800;letter-spacing:2px;color:rgba(255,255,255,0.25);text-transform:uppercase;margin-bottom:8px;}
+.pt-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:4px;}
+.pt-row{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:12px;color:rgba(255,255,255,0.5);border-bottom:1px solid rgba(255,255,255,0.04);}
+.pt-s{font-size:1.1rem;}
+.pt-x{margin-left:auto;color:var(--gold);font-weight:700;font-size:12px;}
+
+/* ── SUBPAGES (VIP / BONI / PROFIL) ── */
+.subpage{display:none;padding:2rem 1.5rem;max-width:900px;}
+.subpage.active{display:block;}
+.sp-hero{
+  background:linear-gradient(135deg,rgba(124,58,237,0.25),rgba(212,168,67,0.15));
+  border:1px solid rgba(212,168,67,0.25);border-radius:6px;
+  padding:2rem;margin-bottom:1.5rem;position:relative;overflow:hidden;
+}
+.sp-hero::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#7c3aed,var(--gold2),#7c3aed);}
+.sp-hero-title{font-family:'Oswald',sans-serif;font-size:2rem;font-weight:700;letter-spacing:3px;color:var(--gold2);text-transform:uppercase;margin-bottom:4px;}
+.sp-hero-sub{font-size:13px;color:rgba(255,255,255,0.45);letter-spacing:1px;}
+.sp-section-title{font-family:'Oswald',sans-serif;font-size:1rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin:1.5rem 0 0.8rem;}
+
+/* VIP TIERS */
+.vip-tiers{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:1.5rem;}
+.vip-tier-card{
+  background:var(--card);border:1px solid var(--border);border-radius:5px;
+  padding:1.2rem 1rem;text-align:center;position:relative;overflow:hidden;
+  transition:transform 0.2s,border-color 0.2s;
+}
+.vip-tier-card:hover{transform:translateY(-3px);}
+.vip-tier-card.current{border-color:var(--gold2);box-shadow:0 0 20px rgba(212,168,67,0.15);}
+.vip-tier-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.vip-tier-card.bronze::before{background:linear-gradient(90deg,#cd7f32,#e8a870);}
+.vip-tier-card.silver::before{background:linear-gradient(90deg,#9e9e9e,#e0e0e0);}
+.vip-tier-card.gold::before{background:linear-gradient(90deg,var(--gold),var(--gold2));}
+.vip-tier-card.platinum::before{background:linear-gradient(90deg,#7c3aed,#a855f7);}
+.vip-tier-card.diamond::before{background:linear-gradient(90deg,#06b6d4,#38bdf8);}
+.vip-tier-icon{font-size:2rem;margin-bottom:8px;}
+.vip-tier-name{font-family:'Oswald',sans-serif;font-size:1rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;}
+.vip-tier-card.bronze .vip-tier-name{color:#cd7f32;}
+.vip-tier-card.silver .vip-tier-name{color:#e0e0e0;}
+.vip-tier-card.gold .vip-tier-name{color:var(--gold2);}
+.vip-tier-card.platinum .vip-tier-name{color:#a855f7;}
+.vip-tier-card.diamond .vip-tier-name{color:#38bdf8;}
+.vip-tier-pts{font-size:11px;color:rgba(255,255,255,0.3);margin-top:4px;letter-spacing:0.5px;}
+.vip-current-badge{
+  position:absolute;top:8px;right:8px;background:var(--gold2);color:#1a1000;
+  font-size:8px;font-weight:800;padding:2px 6px;border-radius:2px;letter-spacing:1px;text-transform:uppercase;
+}
+.vip-progress-wrap{background:var(--card);border:1px solid var(--border);border-radius:5px;padding:1.2rem;margin-bottom:1rem;}
+.vip-progress-label{display:flex;justify-content:space-between;font-size:11px;color:rgba(255,255,255,0.35);margin-bottom:8px;letter-spacing:0.5px;}
+.vip-progress-bar{height:8px;background:rgba(255,255,255,0.08);border-radius:4px;overflow:hidden;}
+.vip-progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:4px;transition:width 0.8s ease;}
+.vip-perks{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;}
+.vip-perk{background:var(--card);border:1px solid var(--border);border-radius:4px;padding:1rem;display:flex;gap:10px;align-items:flex-start;}
+.vip-perk-icon{font-size:1.4rem;flex-shrink:0;}
+.vip-perk-title{font-size:12px;font-weight:700;color:#fff;margin-bottom:2px;letter-spacing:0.3px;}
+.vip-perk-desc{font-size:11px;color:rgba(255,255,255,0.3);line-height:1.4;}
+
+/* BONI */
+.bonus-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;}
+.bonus-card{
+  background:var(--card);border:1px solid var(--border);border-radius:5px;overflow:hidden;
+  transition:border-color 0.2s,transform 0.2s;
+}
+.bonus-card:hover{transform:translateY(-2px);border-color:rgba(212,168,67,0.4);}
+.bonus-card-header{padding:1rem 1.2rem;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);}
+.bonus-card-icon{font-size:2rem;}
+.bonus-card-title{font-family:'Oswald',sans-serif;font-size:1rem;font-weight:700;letter-spacing:1px;color:var(--gold2);text-transform:uppercase;}
+.bonus-card-type{font-size:10px;color:rgba(255,255,255,0.3);letter-spacing:1px;text-transform:uppercase;margin-top:1px;}
+.bonus-card-body{padding:1rem 1.2rem;}
+.bonus-amt-big{font-family:'Oswald',sans-serif;font-size:1.8rem;font-weight:700;color:var(--gold2);letter-spacing:1px;margin-bottom:6px;}
+.bonus-detail{font-size:12px;color:rgba(255,255,255,0.4);line-height:1.6;margin-bottom:10px;}
+.bonus-progress-wrap{margin-bottom:10px;}
+.bonus-progress-label{display:flex;justify-content:space-between;font-size:10px;color:rgba(255,255,255,0.3);margin-bottom:4px;letter-spacing:0.5px;}
+.bonus-progress-bar{height:5px;background:rgba(255,255,255,0.08);border-radius:3px;overflow:hidden;}
+.bonus-progress-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--green2));border-radius:3px;}
+.bonus-tag{display:inline-block;background:rgba(26,138,74,0.2);border:1px solid rgba(39,174,96,0.3);border-radius:2px;font-size:9px;font-weight:800;letter-spacing:1px;padding:2px 8px;color:var(--green2);text-transform:uppercase;margin-bottom:8px;}
+.bonus-tag.inactive{background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.1);color:rgba(255,255,255,0.25);}
+.bonus-tag.vip{background:rgba(168,85,247,0.15);border-color:rgba(168,85,247,0.3);color:#a855f7;}
+.btn-bonus{
+  width:100%;background:linear-gradient(135deg,var(--green),var(--green2));border:none;
+  color:#fff;font-family:'Oswald',sans-serif;font-size:13px;font-weight:700;
+  letter-spacing:2px;padding:9px;border-radius:2px;cursor:pointer;
+  text-transform:uppercase;transition:opacity 0.2s;
+}
+.btn-bonus:hover{opacity:0.85;}
+.btn-bonus:disabled{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.2);cursor:not-allowed;}
+
+/* PROFIL */
+.profile-grid{display:grid;grid-template-columns:280px 1fr;gap:1.5rem;}
+@media(max-width:700px){.profile-grid{grid-template-columns:1fr;}}
+.profile-card{background:var(--card);border:1px solid var(--border);border-radius:5px;overflow:hidden;}
+.profile-avatar-wrap{padding:2rem;text-align:center;background:linear-gradient(180deg,rgba(124,58,237,0.15),transparent);border-bottom:1px solid var(--border);}
+.profile-avatar-big{
+  width:80px;height:80px;border-radius:50%;margin:0 auto 12px;
+  background:linear-gradient(135deg,#7c3aed,#a855f7);
+  display:flex;align-items:center;justify-content:center;
+  font-size:2rem;font-weight:700;color:#fff;border:3px solid rgba(212,168,67,0.4);
+  cursor:pointer;transition:border-color 0.2s;position:relative;
+}
+.profile-avatar-big:hover{border-color:var(--gold2);}
+.profile-avatar-edit{position:absolute;bottom:0;right:0;background:var(--gold2);color:#1a1000;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;}
+.profile-name-big{font-family:'Oswald',sans-serif;font-size:1.3rem;font-weight:700;letter-spacing:2px;color:#fff;margin-bottom:3px;}
+.profile-email-sm{font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:0.5px;margin-bottom:10px;}
+.profile-vip-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  background:linear-gradient(135deg,rgba(212,168,67,0.15),rgba(212,168,67,0.25));
+  border:1px solid rgba(212,168,67,0.4);border-radius:20px;
+  padding:4px 12px;font-size:11px;font-weight:700;color:var(--gold2);letter-spacing:1px;text-transform:uppercase;
+}
+.profile-stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);}
+.profile-stat{background:var(--card);padding:14px 16px;text-align:center;}
+.profile-stat-val{font-family:'Oswald',sans-serif;font-size:1.2rem;font-weight:700;color:var(--gold2);}
+.profile-stat-lbl{font-size:10px;color:rgba(255,255,255,0.25);letter-spacing:1px;text-transform:uppercase;margin-top:2px;}
+.profile-form{background:var(--card);border:1px solid var(--border);border-radius:5px;padding:1.5rem;}
+.profile-form-title{font-family:'Oswald',sans-serif;font-size:1rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:1.2rem;padding-bottom:10px;border-bottom:1px solid var(--border);}
+.profile-save-row{display:flex;gap:10px;margin-top:1rem;}
+.btn-save{
+  flex:1;background:linear-gradient(135deg,#b8860b,var(--gold2));border:none;
+  color:#1a1000;font-family:'Oswald',sans-serif;font-size:13px;font-weight:700;
+  letter-spacing:2px;padding:11px;border-radius:2px;cursor:pointer;
+  text-transform:uppercase;transition:opacity 0.2s;
+}
+.btn-save:hover{opacity:0.9;}
+.save-toast{
+  position:fixed;bottom:24px;right:24px;background:#1a8a4a;color:#fff;
+  padding:12px 20px;border-radius:4px;font-size:13px;font-weight:700;letter-spacing:1px;
+  z-index:99999;opacity:0;transition:opacity 0.3s;pointer-events:none;
+}
+.save-toast.show{opacity:1;}
+.profile-history{background:var(--card);border:1px solid var(--border);border-radius:5px;padding:1.2rem;margin-top:1rem;}
+.ph-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(42,32,80,0.5);font-size:12px;}
+.ph-row:last-child{border-bottom:none;}
+.ph-game{flex:1;color:rgba(255,255,255,0.6);font-weight:600;}
+.ph-bet{color:rgba(255,255,255,0.3);}
+.ph-win{font-weight:700;}
+.ph-win.pos{color:var(--green2);}
+.ph-win.neg{color:var(--red2);}
+.ph-date{font-size:10px;color:rgba(255,255,255,0.2);letter-spacing:0.5px;}
+</style>
+
+<div class="app" id="app">
+
+<!-- ═══════════ AUTH ═══════════ -->
+<div class="auth-wrap" id="authWrap">
+  <div class="auth-deco tl">🎰</div>
+  <div class="auth-deco tr">♠</div>
+  <div class="auth-deco bl">♣</div>
+  <div class="auth-deco br">🎲</div>
+
+  <div class="auth-card">
+    <div class="auth-header">
+      <div class="auth-logo-stars">★ ★ ★</div>
+      <div class="auth-logo-main"><span class="red">FOS/BOS</span> <span class="gold">CASINO</span></div>
+      <div class="auth-tagline">Das Premium Techniker Casino</div>
+    </div>
+
+    <div class="bonus-strip" id="bonusStrip">
+      <div class="bonus-icon">🎁</div>
+      <div><div class="bonus-text">Willkommensbonus</div><div class="bonus-amt">200% bis ⚡1.000</div></div>
+    </div>
+
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tabL" onclick="switchTab('L')">Anmelden</button>
+      <button class="auth-tab" id="tabR" onclick="switchTab('R')">Registrieren</button>
+    </div>
+
+    <div class="auth-body">
+
+      <!-- LOGIN -->
+      <div id="formL">
+        <div class="auth-error" id="errL"></div>
+        <div class="field-group">
+          <label class="field-label">Benutzername</label>
+          <input class="field-input" type="text" id="lUser" placeholder="Dein Benutzername">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Passwort</label>
+          <div class="pw-wrap">
+            <input class="field-input" type="password" id="lPw" placeholder="Passwort" style="padding-right:42px;">
+            <button class="pw-toggle" onclick="togglePw('lPw',this)" type="button">👁</button>
+          </div>
+        </div>
+        <button class="btn-primary" onclick="doLogin()">Einloggen</button>
+        <div class="hint-text"></div>
+        <div class="age-note">⚠ Nur für echte Techniker · Spiele verantwortungsvoll ⚠</div>
+      </div>
+
+      <!-- REGISTER -->
+      <div id="formR" style="display:none;">
+        <div class="auth-error" id="errR"></div>
+        <div class="auth-success" id="sucR"></div>
+        <div class="field-group"><label class="field-label">Benutzername</label><input class="field-input" type="text" id="rUser" placeholder="z.B. Der Phoenix123"></div>
+        <div class="field-group">
+          <label class="field-label">Passwort</label>
+          <div class="pw-wrap">
+            <input class="field-input" type="password" id="rPw" placeholder="Min. 8 Zeichen" style="padding-right:42px;" oninput="chkStr(this.value)">
+            <button class="pw-toggle" onclick="togglePw('rPw',this)" type="button">👁</button>
+          </div>
+          <div class="strength-bar"><div class="strength-fill" id="strFill"></div></div>
+        </div>
+        <div class="terms-row"><input type="checkbox" id="termsC"><label for="termsC">Ich akzeptiere die <a href="https://www.fosbos-wuerzburg.de/allgemeine-informationen-2/">AGB</a> & <a href="https://www.fosbos-wuerzburg.de/datenschutz/">Datenschutzrichtlinie</a> und bin im Technikzweig.</label></div>
+        <div class="terms-row"><input type="checkbox" id="bonusC" checked><label for="bonusC">Ich möchte den Bonus von 200% bis ⚡1.000 erhalten.</label></div>
+        <button class="btn-primary" onclick="doReg()">Konto erstellen & Bonus sichern</button>
+        <div class="age-note" style="margin-top:1rem;">⚠ Nur für echte Techinker · Spiele verantwortungsvoll ⚠</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ CASINO APP ═══════════ -->
+<div class="casino-app" id="casinoApp">
+
+  <!-- TOP NAV -->
+  <div class="top-nav">
+    <div class="nav-logo"><span class="r"></span>FOS/BOS</span><span class="g">CASINO</span></div>
+    <div class="nav-links">
+      <button class="nav-link active" onclick="setNav(this);showPage('games')">Slots</button>
+      <button class="nav-link" onclick="setNav(this);showPage('vip')">FOS/BOS</button>
+      <button class="nav-link" onclick="setNav(this);showPage('bonuses')">Boni</button>
+      <button class="nav-link" onclick="setNav(this);showPage('vip')">VIP Club</button>
+    </div>
+    <div class="nav-right">
+      <div class="balance-chip">
+        <div><div class="balance-label">Guthaben</div><div class="balance-val" id="balVal">⚡ 1.000</div></div>
+      </div>
+      <div class="balance-chip" style="border-color:rgba(168,85,247,0.3);min-width:80px;">
+        <div><div class="balance-label">⏱ Session</div><div class="balance-val" id="sessionTimeDisp" style="color:#a855f7;font-size:0.85rem;">0:00</div></div>
+      </div>
+
+      <button class="deposit-btn" id="depositBtn" onclick="openLoanshark()" style="background:linear-gradient(135deg,#4a0f0f,#7c1a1a);border:1px solid rgba(192,57,43,0.5);color:rgba(255,180,180,0.8);cursor:pointer;opacity:1;">🦈 Kredit</button>
+      <div class="user-btn" onclick="toggleDD()">
+        <div class="user-av" id="uAv">RS</div>
+        <span class="user-nm" id="uNm">Spieler</span>
+        <span class="user-caret">▾</span>
+        <div class="user-dropdown" id="uDD">
+          <div class="ud-header">Mein Konto</div>
+          <button class="ud-item" onclick="toggleDD();showPage('profile')">👤 Mein Profil</button>
+          <button class="ud-item" onclick="toggleDD();openLoanshark()">🦈 Kredit bei Big Samo</button>
+          <button class="ud-item" onclick="alert('Spielverlauf öffnen')">📋 Spielverlauf</button>
+          <button class="ud-item" onclick="toggleDD();showPage('bonuses')">🎁 Meine Boni</button>
+          <button class="ud-item" onclick="toggleDD();showPage('vip')">👑 VIP Status</button>
+          <button class="ud-item danger" onclick="doLogout()">🚪 Abmelden</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DEBT TIMER BAR -->
+  <div class="debt-bar" id="debtBar">
+    <div class="debt-icon">🦈</div>
+    <div class="debt-info">
+      <div class="debt-label">Schulden beim Kredithai</div>
+      <div class="debt-amount" id="debtAmountDisp">⚡ 0</div>
+    </div>
+    <div class="debt-timer" id="debtTimerDisp">--:--</div>
+    <button class="debt-repay-btn" onclick="openRepayModal()">Zurückzahlen</button>
+  </div>
+  <div class="promo-bar">
+    <div class="promo-item"><span class="promo-icon">🎁</span><span class="promo-text">Reload Bonus: <strong>50% bis ⚡200</strong> jeden Freitag</span></div>
+    <div class="promo-sep">|</div>
+    <div class="promo-item"><span class="promo-icon">🔄</span><span class="promo-text">Cashback: <strong>15%</strong> auf Verluste – wöchentlich</span></div>
+    <div class="promo-sep">|</div>
+    <div class="promo-item"><span class="promo-icon">🏆</span><span class="promo-text">Turnier läuft: <strong>⚡10.000 Preispool</strong> · endet in 2h</span></div>
+    <div class="promo-sep">|</div>
+    
+  </div>
+
+  <!-- LIVE TICKER -->
+  <div class="live-ticker">
+    <div class="live-badge">● Live</div>
+    <div class="ticker-scroll" id="tickScroll">
+      <div class="tick"><span class="tick-name">Friedrich Merz</span><span class="tick-txt">gewann</span><span class="tick-amt">3 Stimmen</span><span class="tick-txt">– Kanzlerwahl</span></div>
+      <div class="tick"><span class="tick-name">Paul</span><span class="tick-txt">verlor</span><span class="tick-amt">Autoschlüssel</span><span class="tick-txt">– FOS/BOS Casino</span></div>
+      <div class="tick"><span class="tick-name">SpinKing</span><span class="tick-txt">gewann</span><span class="tick-amt">⚡ 12.500</span><span class="tick-txt">– Mega Fortune</span></div>
+      <div class="tick"><span class="tick-name">FrankH.</span><span class="tick-txt">gewann</span><span class="tick-amt">⚡ 4.500</span><span class="tick-txt">– Dead or Alive 2</span></div>
+      <div class="tick"><span class="tick-name">RoyalAce</span><span class="tick-txt">gewann</span><span class="tick-amt">⚡ 7.200</span><span class="tick-txt">– Gates of Olympus</span></div>
+    </div>
+  </div>
+
+  <div class="layout">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="sb-section">Kategorien</div>
+      <button class="sb-item" onclick="sbNav(this,'metall')"><span class="sb-icon">​🔩​</span>Metall</button>
+      <button class="sb-item" onclick="sbNav(this,'elektro')"><span class="sb-icon">🔌​</span>Elektro</button>
+      <button class="sb-item" onclick="sbNav(this,'tischspiele')"><span class="sb-icon">🃏</span>Tischspiele</button>
+      <button class="sb-item" onclick="sbNav(this,'sonstiges')"><span class="sb-icon">🚫</span>Sonstiges</button>
+
+      <div class="sb-section">Anbieter</div>
+      <button class="sb-item" onclick="sbNav(this,'all')"><span class="sb-icon">🏢</span>Elektro</button>
+      <button class="sb-item" onclick="sbNav(this,'all')"><span class="sb-icon">🏢</span>Metall</button>
+
+      <div class="sb-section">Mein Konto</div>
+      <button class="sb-item" onclick="showPage('profile')"><span class="sb-icon">👤</span>Mein Profil</button>
+      <button class="sb-item" onclick="sbNav(this,'all');showPage('games')"><span class="sb-icon">⭐</span>Favoriten</button>
+      <button class="sb-item" onclick="sbNav(this,'all');showPage('games')"><span class="sb-icon">🕐</span>Zuletzt gespielt</button>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main">
+
+      <!-- SAVE TOAST -->
+      <div class="save-toast" id="saveToast">✓ Gespeichert!</div>
+
+      <!-- ── GAMES PAGE ── -->
+      <div id="page-games" class="subpage active" style="padding:0;max-width:none;display:block;">
+
+      <!-- JACKPOTS -->
+      <div class="jackpot-section">
+        <div class="jp-card mega">
+          <div class="jp-tier">Mega</div>
+          <div class="jp-amt" id="jp0">⚡ 284.391</div>
+          <div class="jp-sub">Täglich wachsend</div>
+        </div>
+        <div class="jp-card major">
+          <div class="jp-tier">Major</div>
+          <div class="jp-amt" id="jp1">⚡ 48.220</div>
+          <div class="jp-sub">Zuletzt gewonnen: vor 3h</div>
+        </div>
+        <div class="jp-card minor">
+          <div class="jp-tier">Minor</div>
+          <div class="jp-amt" id="jp2">⚡ 4.780</div>
+          <div class="jp-sub">Täglicher Jackpot</div>
+        </div>
+        <div class="jp-card mini">
+          <div class="jp-tier">Mini</div>
+          <div class="jp-amt" id="jp3">⚡ 312</div>
+          <div class="jp-sub">Jede Stunde</div>
+        </div>
+        <button class="jp-play-btn" onclick="openSlot(0)">Jetzt spielen</button>
+      </div>
+
+      <!-- CATEGORIES -->
+      <div class="cat-bar">
+        <button class="cat-btn active" onclick="filterG('all',this)"><span class="cat-icon">🎰</span>Alle</button>
+        <button class="cat-btn" onclick="filterG('popular',this)"><span class="cat-icon">🔥</span>Beliebt</button>
+        <button class="cat-btn" onclick="filterG('new',this)"><span class="cat-icon">✨</span>Neu</button>
+        <button class="cat-btn" onclick="filterG('jackpot',this)"><span class="cat-icon">💎</span>Jackpot</button>
+        <button class="cat-btn" onclick="filterG('all',this)"><span class="cat-icon">⚡</span>Megaways</button>
+        <button class="cat-btn" onclick="filterG('all',this)"><span class="cat-icon">🃏</span>Klassisch</button>
+        <button class="cat-btn" onclick="filterG('all',this)"><span class="cat-icon">🎃</span>Themen</button>
+      </div>
+
+      <!-- GAMES -->
+      <div class="game-section">
+        <div class="game-section-title"><span class="title-accent">◆</span> Featured Slots</div>
+        <div class="games-grid" id="gGrid"></div>
+      </div>
+
+      </div><!-- end page-games -->
+
+      <!-- ── VIP PAGE ── -->
+      <div id="page-vip" class="subpage">
+        <div class="sp-hero">
+          <div style="font-size:2.5rem;margin-bottom:8px;">👑</div>
+          <div class="sp-hero-title">VIP Club</div>
+          <div class="sp-hero-sub">Erlebe exklusive Vorteile – je höher dein Status, desto mehr bekommst du.</div>
+        </div>
+
+        <div class="vip-progress-wrap">
+          <div class="vip-progress-label">
+            <span>Dein Fortschritt: <strong style="color:#fff;" id="vipLevelName">Bronze</strong></span>
+            <span id="vipPtsLabel">0 / 500 Punkte → Silber</span>
+          </div>
+          <div class="vip-progress-bar"><div class="vip-progress-fill" id="vipProgressFill" style="width:0%"></div></div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.25);margin-top:8px;letter-spacing:0.5px;">1 Punkt pro ⚡10 Einsatz · Punkte verfallen nicht</div>
+        </div>
+
+        <div class="sp-section-title">Status-Stufen</div>
+        <div class="vip-tiers">
+          <div class="vip-tier-card bronze" id="vipCard-bronze">
+            <div class="vip-tier-icon">🥉</div>
+            <div class="vip-tier-name">Bronze</div>
+            <div class="vip-tier-pts">0 – 499 Pts</div>
+          </div>
+          <div class="vip-tier-card silver" id="vipCard-silver">
+            <div class="vip-tier-icon">🥈</div>
+            <div class="vip-tier-name">Silber</div>
+            <div class="vip-tier-pts">500 – 1.999 Pts</div>
+          </div>
+          <div class="vip-tier-card gold" id="vipCard-gold">
+            <div class="vip-tier-icon">🥇</div>
+            <div class="vip-tier-name">Gold</div>
+            <div class="vip-tier-pts">2.000 – 4.999 Pts</div>
+          </div>
+          <div class="vip-tier-card platinum" id="vipCard-platinum">
+            <div class="vip-tier-icon">💜</div>
+            <div class="vip-tier-name">Platinum</div>
+            <div class="vip-tier-pts">5.000 – 9.999 Pts</div>
+          </div>
+          <div class="vip-tier-card diamond" id="vipCard-diamond">
+            <div class="vip-tier-icon">💎</div>
+            <div class="vip-tier-name">Diamond</div>
+            <div class="vip-tier-pts">10.000+ Pts</div>
+          </div>
+        </div>
+
+        <div class="sp-section-title">🎲 Risiko &amp; Gewinn</div>
+        <div style="background:linear-gradient(135deg,rgba(124,58,237,0.12),rgba(212,168,67,0.08));border:1px solid rgba(212,168,67,0.25);border-radius:6px;padding:1.2rem 1.4rem;margin-bottom:1.5rem;font-size:12px;line-height:1.8;color:rgba(255,255,255,0.6);">
+          <div style="font-family:'Oswald',sans-serif;font-size:1rem;font-weight:700;color:var(--gold2);letter-spacing:1px;margin-bottom:10px;">Je hoeher dein VIP-Level, desto hoeher der potenzielle Gewinn – und das Risiko.</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-top:8px;">
+            <div style="background:rgba(0,0,0,0.3);border-radius:4px;padding:10px 12px;border-left:3px solid #27ae60;"><div style="font-weight:800;color:#27ae60;">&#x1F3C9; BRONZE</div><div style="margin-top:4px;">Niedriges Risiko &middot; Max <strong style="color:var(--gold);">5&times;</strong><br>Einsatz: ⚡1 – ⚡10<br>Gleichmaessige Gewinne, selten leer ausgehen.</div></div>
+            <div style="background:rgba(0,0,0,0.3);border-radius:4px;padding:10px 12px;border-left:3px solid #f0c060;"><div style="font-weight:800;color:#f0c060;">&#x1F948; SILBER</div><div style="margin-top:4px;">Mittleres Risiko &middot; Max <strong style="color:var(--gold);">50&times;</strong><br>Einsatz: ⚡5 – ⚡50<br>Mehr Schwankung, staerkere Treffer moeglich.</div></div>
+            <div style="background:rgba(0,0,0,0.3);border-radius:4px;padding:10px 12px;border-left:3px solid #e67e22;"><div style="font-weight:800;color:#e67e22;">&#x1F947; GOLD</div><div style="margin-top:4px;">Hohes Risiko &middot; Max <strong style="color:var(--gold);">200&times;</strong><br>Einsatz: ⚡10 – ⚡100<br>Lange Dursttrecken, aber massive Jackpots.</div></div>
+            <div style="background:rgba(0,0,0,0.3);border-radius:4px;padding:10px 12px;border-left:3px solid #e74c3c;"><div style="font-weight:800;color:#e74c3c;">&#x1F49C; PLATINUM</div><div style="margin-top:4px;">Sehr hohes Risiko &middot; Max <strong style="color:var(--gold);">1.000&times;</strong><br>Einsatz: ⚡25 – ⚡250<br>Fuer echte Adrenalinjunkies.</div></div>
+            <div style="background:rgba(0,0,0,0.3);border-radius:4px;padding:10px 12px;border-left:3px solid #a855f7;"><div style="font-weight:800;color:#a855f7;">&#x1F48E; DIAMOND</div><div style="margin-top:4px;">Extremes Risiko &middot; Max <strong style="color:var(--gold);">10.000&times;</strong><br>Einsatz: ⚡50 – ⚡500<br>Alles oder nichts – legendaere Gewinne warten.</div></div>
+          </div>
+        </div>
+        <div class="sp-section-title">Deine VIP-Vorteile</div>
+        <div class="vip-perks">
+          <div class="vip-perk"><div class="vip-perk-icon">💰</div><div><div class="vip-perk-title">Persönlicher Cashback</div><div class="vip-perk-desc">Bis zu 20% wöchentlicher Cashback auf alle Verluste.</div></div></div>
+          <div class="vip-perk"><div class="vip-perk-icon">🎁</div><div><div class="vip-perk-title">Exklusive Boni</div><div class="vip-perk-desc">Monatliche Reload-Boni nur für VIP-Mitglieder.</div></div></div>
+          <div class="vip-perk"><div class="vip-perk-icon">⚡</div><div><div class="vip-perk-title">Schnellere Auszahlungen</div><div class="vip-perk-desc">Priorität bei Auszahlungen – Gold+ innerhalb 2h.</div></div></div>
+          
+          <div class="vip-perk"><div class="vip-perk-icon">🏆</div><div><div class="vip-perk-title">VIP-Turniere</div><div class="vip-perk-desc">Zugang zu exklusiven Turnieren mit riesigen Preispools.</div></div></div>
+          <div class="vip-perk"><div class="vip-perk-icon">👨‍💼</div><div><div class="vip-perk-title">Persönlicher Manager</div><div class="vip-perk-desc">Ab Platinum: dein eigener Account-Manager, 24/7.</div></div></div>
+        </div>
+      </div>
+
+      <!-- ── BONI PAGE ── -->
+      <div id="page-bonuses" class="subpage">
+        <div class="sp-hero">
+          <div style="font-size:2.5rem;margin-bottom:8px;">🎁</div>
+          <div class="sp-hero-title">Meine Boni</div>
+          <div class="sp-hero-sub">Aktive und verfügbare Bonusangebote für dein Konto.</div>
+        </div>
+
+        <div class="sp-section-title">Aktive Boni</div>
+        <div class="bonus-cards">
+          <div class="bonus-card">
+            <div class="bonus-card-header">
+              <div class="bonus-card-icon">🎉</div>
+              <div><div class="bonus-card-title">Willkommensbonus</div><div class="bonus-card-type">Einzahlungsbonus</div></div>
+            </div>
+            <div class="bonus-card-body">
+              <div class="bonus-tag">● Aktiv</div>
+              <div class="bonus-amt-big">⚡ 1.000</div>
+              <div class="bonus-detail">200% auf deine erste Einzahlung + ⚡500 Bonus-Blitze auf dein Guthaben.</div>
+              <div class="bonus-progress-wrap">
+                <div class="bonus-progress-label"><span>Umsatzbedingung</span><span id="wbProg">⚡ 320 / ⚡ 3.000</span></div>
+                <div class="bonus-progress-bar"><div class="bonus-progress-fill" id="wbFill" style="width:10.7%"></div></div>
+              </div>
+              <button class="btn-bonus" onclick="openSlot(0)">Jetzt spielen</button>
+            </div>
+          </div>
+
+          <div class="bonus-card">
+            <div class="bonus-card-header">
+              <div class="bonus-card-icon">🔄</div>
+              <div><div class="bonus-card-title">Friday Reload</div><div class="bonus-card-type">Wöchentlicher Bonus</div></div>
+            </div>
+            <div class="bonus-card-body">
+              <div class="bonus-tag inactive">○ Verfügbar ab Freitag</div>
+              <div class="bonus-amt-big">50%</div>
+              <div class="bonus-detail">50% Reload-Bonus bis ⚡200 jeden Freitag. Mindesteinzahlung ⚡20.</div>
+              <div class="bonus-detail" style="color:rgba(255,255,255,0.2);font-size:10px;">Verfügbar in: 3 Tagen</div>
+              <button class="btn-bonus" disabled>Noch nicht verfügbar</button>
+            </div>
+          </div>
+
+          <div class="bonus-card">
+            <div class="bonus-card-header">
+              <div class="bonus-card-icon">💰</div>
+              <div><div class="bonus-card-title">Cashback</div><div class="bonus-card-type">Wöchentlicher Cashback</div></div>
+            </div>
+            <div class="bonus-card-body">
+              <div class="bonus-tag">● Aktiv</div>
+              <div class="bonus-amt-big">15%</div>
+              <div class="bonus-detail">15% Cashback auf wöchentliche Verluste – wird jeden Montag gutgeschrieben.</div>
+              <div class="bonus-detail" style="font-size:11px;color:rgba(255,255,255,0.2);">Nächste Auszahlung: Montag</div>
+              <button class="btn-bonus" onclick="alert('Cashback wird am Montag automatisch gutgeschrieben.')">Details</button>
+            </div>
+          </div>
+
+          <div class="bonus-card">
+            <div class="bonus-card-header">
+              <div class="bonus-card-icon">👑</div>
+              <div><div class="bonus-card-title">VIP Cashback Boost</div><div class="bonus-card-type">VIP-Exklusiv</div></div>
+            </div>
+            <div class="bonus-card-body">
+              <div class="bonus-tag vip">★ VIP</div>
+              <div class="bonus-amt-big">⚡ 2.500</div>
+              <div class="bonus-detail">⚡2.500 Bonus-Blitze als exklusiver VIP-Cashback – wird automatisch gutgeschrieben.</div>
+              <button class="btn-bonus" onclick="openSlot(6)">Jetzt einlösen</button>
+            </div>
+          </div>
+
+          <div class="bonus-card">
+            <div class="bonus-card-header">
+              <div class="bonus-card-icon">🏆</div>
+              <div><div class="bonus-card-title">Turnier-Bonus</div><div class="bonus-card-type">Laufendes Turnier</div></div>
+            </div>
+            <div class="bonus-card-body">
+              <div class="bonus-tag">● Läuft</div>
+              <div class="bonus-amt-big">⚡10.000</div>
+              <div class="bonus-detail">Trete dem laufenden Turnier bei und kämpfe um den Preispool. Endet in 2h.</div>
+              <button class="btn-bonus" onclick="openSlot(0)">Am Turnier teilnehmen</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PROFIL PAGE ── -->
+      <div id="page-profile" class="subpage">
+        <div class="sp-hero">
+          <div style="font-size:2.5rem;margin-bottom:8px;">👤</div>
+          <div class="sp-hero-title">Mein Profil</div>
+          <div class="sp-hero-sub">Verwalte deine persönlichen Daten und sieh deine Statistiken.</div>
+        </div>
+
+        <div class="profile-grid">
+          <!-- LEFT COLUMN -->
+          <div>
+            <div class="profile-card" style="margin-bottom:1rem;">
+              <div class="profile-avatar-wrap">
+                <div class="profile-avatar-big" id="profileAvBig" onclick="uploadAvatar()" style="cursor:pointer;" title="Klicken um Bild hochzuladen">
+                  <span id="profileAvText">RS</span>
+                  <div class="profile-avatar-edit">✏</div>
+                </div>
+                <div class="profile-name-big" id="profileNameBig">–</div>
+                <div class="profile-email-sm" id="profileEmailSm">–</div>
+                <div class="profile-vip-badge" id="profileVipBadge">🥉 Bronze</div>
+              </div>
+              <div class="profile-stats">
+                <div class="profile-stat">
+                  <div class="profile-stat-val" id="statGames">0</div>
+                  <div class="profile-stat-lbl">Spiele</div>
+                </div>
+                <div class="profile-stat">
+                  <div class="profile-stat-val" id="statWins">0</div>
+                  <div class="profile-stat-lbl">Gewinne</div>
+                </div>
+                <div class="profile-stat">
+                  <div class="profile-stat-val" id="statBal">–</div>
+                  <div class="profile-stat-lbl">Guthaben</div>
+                </div>
+                <div class="profile-stat">
+                  <div class="profile-stat-val" id="statVip">0</div>
+                  <div class="profile-stat-lbl">VIP Pts</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="profile-history">
+              <div class="profile-form-title">Letzte Spiele</div>
+              <div id="historyList">
+                <div style="font-size:12px;color:rgba(255,255,255,0.2);text-align:center;padding:12px 0;">Noch keine Spiele</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT COLUMN -->
+          <div>
+            <div class="profile-form" style="margin-bottom:1rem;">
+              <div class="profile-form-title">Persönliche Daten</div>
+              <div class="field-group"><label class="field-label">Benutzername</label><input class="field-input" type="text" id="pfUser" placeholder="Benutzername"></div>
+              <div class="field-group"><label class="field-label">Profilbeschreibung</label><textarea class="field-input" id="pfBio" placeholder="Erzähl etwas über dich…" rows="3" style="resize:none;"></textarea></div>
+              <div class="field-group"><label class="field-label">Lieblingsfarbe / Avatar-Farbe</label>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;" id="avatarColors">
+                  <div class="avatar-color-opt" data-c="#7c3aed,#a855f7" onclick="pickColor(this)" style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#a855f7);cursor:pointer;border:2px solid var(--gold2);"></div>
+                  <div class="avatar-color-opt" data-c="#c0392b,#e74c3c" onclick="pickColor(this)" style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#c0392b,#e74c3c);cursor:pointer;border:2px solid transparent;"></div>
+                  <div class="avatar-color-opt" data-c="#1a8a4a,#27ae60" onclick="pickColor(this)" style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#1a8a4a,#27ae60);cursor:pointer;border:2px solid transparent;"></div>
+                  <div class="avatar-color-opt" data-c="#b8860b,#f0c060" onclick="pickColor(this)" style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#b8860b,#f0c060);cursor:pointer;border:2px solid transparent;"></div>
+                  <div class="avatar-color-opt" data-c="#0e7490,#22d3ee" onclick="pickColor(this)" style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#0e7490,#22d3ee);cursor:pointer;border:2px solid transparent;"></div>
+                </div>
+              </div>
+              <div class="field-group" style="margin-top:0.5rem;">
+                <label class="field-label">Profilbild</label>
+                <div style="display:flex;gap:8px;margin-top:4px;">
+                  <button class="btn-save" style="flex:1;" onclick="uploadAvatar()">📷 Bild hochladen</button>
+                  <button class="btn-save" style="background:rgba(192,57,43,0.3);border:1px solid rgba(231,76,60,0.4);color:#e74c3c;" onclick="removeAvatar()">✕ Entfernen</button>
+                </div>
+              </div>
+              <div class="profile-save-row">
+                <button class="btn-save" onclick="saveProfile()">💾 Profil speichern</button>
+              </div>
+            </div>
+
+            <div class="profile-form">
+              <div class="profile-form-title">Sicherheit</div>
+              <div class="field-group"><label class="field-label">Neues Passwort</label><input class="field-input" type="password" id="pfPwNew" placeholder="Neues Passwort (min. 8 Zeichen)"></div>
+              <div class="field-group"><label class="field-label">Passwort bestätigen</label><input class="field-input" type="password" id="pfPwConf" placeholder="Wiederholen"></div>
+              <div class="profile-save-row">
+                <button class="btn-save" onclick="savePw()">🔒 Passwort ändern</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+  </div><!-- end .layout -->
+</div><!-- end .casino-app -->
+
+</div><!-- end .app -->
+
+<!-- GAME MODAL (Slot / Blackjack / Roulette) -->
+<div class="s-modal" id="sModal">
+  <div class="s-inner" id="sInner" style="max-width:600px;">
+    <div class="s-header">
+      <div class="s-title" id="sTitle">Spiel</div>
+      <button class="s-close" onclick="closeGame()">✕</button>
+    </div>
+    <!-- SLOT UI -->
+    <div id="uiSlot">
+    <div class="s-meta">
+      <div class="s-meta-item">Feld: <strong id="sGridSize">1×3</strong></div>
+      <div class="s-meta-item">Linien: <strong id="sLines">1</strong></div>
+      <div class="s-meta-item">Min. Einsatz: <strong id="sMinBet">⚡1</strong></div>
+      <div class="s-meta-item">RTP: <strong class="green" id="sRTP">96.5%</strong></div>
+      <div class="s-meta-item">Volatilität: <strong id="sRisk">–</strong></div>
+      <div class="s-meta-item">Max Gewinn: <strong id="sMaxWin" style="color:var(--gold2);">–</strong></div>
+    </div>
+    <div class="s-body" style="padding:1rem 1.2rem;">
+      <!-- 3×5 Reel grid -->
+      <div id="reelGrid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:4px;background:rgba(0,0,0,0.6);border:1px solid rgba(212,168,67,0.25);border-radius:6px;padding:8px;margin-bottom:10px;position:relative;">
+        <div id="winLineOverlay" style="position:absolute;inset:0;pointer-events:none;z-index:5;"></div>
+      </div>
+      <div class="win-msg no-win" id="wMsg" style="font-size:1.1rem;min-height:1.8rem;margin-bottom:8px;">Drücke SPIN zum Starten</div>
+      <div class="bet-section" style="margin-bottom:8px;">
+        <div class="bet-label-row"><span class="bet-label-txt">Einsatz</span><span class="bet-total" id="betDisp">⚡ 1</span></div>
+        <div class="bet-chips" id="slotBetChips">
+          <button class="bet-chip active" onclick="slotSetBet(1,this)">⚡1</button>
+        </div>
+      </div>
+      <div class="spin-row">
+        <button class="spin-btn" id="spinBtn" onclick="doSpin()">SPIN</button>
+        <button class="auto-btn" id="autoBtn" onclick="toggleAuto()">AUTO</button>
+      </div>
+      <button class="pt-toggle" onclick="togglePT()" style="width:100%;margin-top:6px;">Gewinnplan ▾</button>
+      <div class="paytab" id="payTab">
+        <div class="pt-head">Gewinntabelle – mind. 3 gleiche auf Linie</div>
+        <div class="pt-grid" id="ptGrid"></div>
+      </div>
+    </div>
+    </div><!-- end uiSlot -->
+
+    <!-- BLACKJACK UI -->
+    <div id="uiBJ" style="display:none;padding:1.2rem;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <div style="font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:1px;">RTP: <strong style="color:var(--green2)">99.5%</strong></div>
+        <div id="bjStatus" style="font-family:'Oswald',sans-serif;font-size:1.1rem;color:var(--gold2);letter-spacing:2px;text-align:center;">Setze deinen Einsatz</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.3);"></div>
+      </div>
+      <!-- Dealer -->
+      <div style="text-align:center;margin-bottom:8px;">
+        <div style="font-size:10px;letter-spacing:2px;color:rgba(255,255,255,0.3);text-transform:uppercase;margin-bottom:6px;">Dealer <span id="dealerTotal" style="color:#fff;"></span></div>
+        <div id="dealerCards" style="display:flex;justify-content:center;gap:6px;min-height:90px;align-items:center;flex-wrap:wrap;"></div>
+      </div>
+      <div style="height:1px;background:rgba(255,255,255,0.06);margin:10px 0;"></div>
+      <!-- Player -->
+      <div style="text-align:center;margin-bottom:10px;">
+        <div style="font-size:10px;letter-spacing:2px;color:rgba(255,255,255,0.3);text-transform:uppercase;margin-bottom:6px;">Du <span id="playerTotal" style="color:#fff;"></span></div>
+        <div id="playerCards" style="display:flex;justify-content:center;gap:6px;min-height:90px;align-items:center;flex-wrap:wrap;"></div>
+      </div>
+      <!-- Bet controls -->
+      <div style="margin-bottom:10px;">
+        <div class="bet-label-row"><span class="bet-label-txt">Einsatz</span><span class="bet-total" id="bjBetDisp">⚡ 10</span></div>
+        <div class="bet-chips" id="bjBetChips">
+          <button class="bet-chip" onclick="bjAddBet(5)">+⚡5</button>
+          <button class="bet-chip" onclick="bjAddBet(10)">+⚡10</button>
+          <button class="bet-chip" onclick="bjAddBet(25)">+⚡25</button>
+          <button class="bet-chip" onclick="bjAddBet(50)">+⚡50</button>
+          <button class="bet-chip" onclick="bjClearBet()">✕ Reset</button>
+        </div>
+      </div>
+      <div id="bjActions" style="display:flex;gap:8px;">
+        <button class="spin-btn" style="background:linear-gradient(135deg,#1a8a4a,#27ae60);" onclick="bjDeal()">DEAL</button>
+      </div>
+    </div><!-- end uiBJ -->
+
+    <!-- ROULETTE UI -->
+    <div id="uiRL" style="display:none;padding:1rem 1.2rem;">
+      <div style="display:flex;gap:1rem;margin-bottom:10px;align-items:flex-start;">
+        <!-- Wheel vis -->
+        <div style="flex-shrink:0;text-align:center;">
+          <canvas id="rlCanvas" width="160" height="160" style="border-radius:50%;border:2px solid rgba(212,168,67,0.3);"></canvas>
+          <div id="rlBallNum" style="font-family:'Oswald',sans-serif;font-size:2rem;font-weight:700;color:var(--gold2);margin-top:4px;letter-spacing:2px;">–</div>
+        </div>
+        <!-- Bet table -->
+        <div style="flex:1;overflow-x:auto;">
+          <div style="font-size:10px;color:rgba(255,255,255,0.3);letter-spacing:1px;margin-bottom:4px;">CHIP: <span id="rlChipDisp" style="color:var(--gold2);">⚡5</span></div>
+          <div id="rlTable" style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:4px;"></div>
+          <!-- Outside bets -->
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;margin-bottom:4px;">
+            <button class="rl-out-btn" onclick="rlBetOut('1-18','1-18',2)">1-18</button>
+            <button class="rl-out-btn" onclick="rlBetOut('19-36','19-36',2)">19-36</button>
+            <button class="rl-out-btn" onclick="rlBetOut('even','GERADE',2)">GERADE</button>
+            <button class="rl-out-btn" onclick="rlBetOut('odd','UNGERADE',2)">UNGERADE</button>
+            <button class="rl-out-btn" style="background:rgba(220,50,50,0.25);border-color:rgba(220,50,50,0.5);color:#e74c3c;" onclick="rlBetOut('red','ROT',2)">ROT</button>
+            <button class="rl-out-btn" onclick="rlBetOut('black','SCHWARZ',2)">SCHWARZ</button>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;">
+            <button class="rl-out-btn" onclick="rlBetOut('1doz','1. Dutzend',3)">1-12</button>
+            <button class="rl-out-btn" onclick="rlBetOut('2doz','2. Dutzend',3)">13-24</button>
+            <button class="rl-out-btn" onclick="rlBetOut('3doz','3. Dutzend',3)">25-36</button>
+          </div>
+        </div>
+      </div>
+      <!-- Active bets + chip picker -->
+      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:8px;">
+        <span style="font-size:10px;color:rgba(255,255,255,0.3);">CHIP:</span>
+        <div id="rlChipArea" style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+          <button class="bet-chip active" onclick="rlSetChip(5,this)">⚡5</button>
+          <button class="bet-chip" onclick="rlSetChip(10,this)">⚡10</button>
+          <button class="bet-chip" onclick="rlClearBets()">✕ Löschen</button>
+        </div>
+      </div>
+      <div id="rlBetList" style="font-size:11px;color:rgba(255,255,255,0.4);min-height:18px;margin-bottom:8px;"></div>
+      <div style="display:flex;gap:8px;">
+        <button class="spin-btn" id="rlSpinBtn" onclick="rlSpin()">DREHEN</button>
+      </div>
+      <div id="rlResult" style="font-family:'Oswald',sans-serif;font-size:1.1rem;color:var(--gold2);text-align:center;min-height:1.6rem;margin-top:8px;letter-spacing:2px;"></div>
+    </div><!-- end uiRL -->
+
+  </div>
+</div>
+
+</div>
+
+<!-- ═══════════ LOANSHARK MODAL ═══════════ -->
+<div class="ls-modal-bg" id="lsModal" style="display:none;">
+  <div class="ls-modal">
+    <div class="ls-header">
+      <div class="ls-avatar">🦈</div>
+      <div class="ls-name">Big Samo</div>
+      <div class="ls-subtitle">Privatkreditgeber · Stellt keine Fragen</div>
+    </div>
+    <div class="ls-body">
+      <div class="ls-quote" id="lsQuote">"Du siehst aus, als könntest du etwas Startkapital gebrauchen. Ich helfe gerne – aber Geld hat seinen Preis, verstehst du?"</div>
+      <div class="ls-offers" id="lsOffers">
+        <div class="ls-offer" onclick="takeLoan(0)">
+          <div class="ls-offer-amount">⚡ 500 Blitze</div>
+          <div class="ls-offer-detail">Rückzahlung: ⚡ 900 · Laufzeit: <strong style="color:#fff">10 Minuten</strong></div>
+          <div class="ls-offer-danger">⚠ 80% Zinsen – Standardangebot</div>
+        </div>
+        <div class="ls-offer" onclick="takeLoan(1)">
+          <div class="ls-offer-amount">⚡ 2.000 Blitze</div>
+          <div class="ls-offer-detail">Rückzahlung: ⚡ 4.200 · Laufzeit: <strong style="color:#fff">8 Minuten</strong></div>
+          <div class="ls-offer-danger">⚠ 110% Zinsen – Etwas riskant</div>
+        </div>
+        <div class="ls-offer" onclick="takeLoan(2)">
+          <div class="ls-offer-amount">⚡ 5.000 Blitze</div>
+          <div class="ls-offer-detail">Rückzahlung: ⚡ 12.500 · Laufzeit: <strong style="color:#fff">6 Minuten</strong></div>
+          <div class="ls-offer-danger">⚠ 150% Zinsen – Sehr riskant</div>
+        </div>
+        <div class="ls-offer" onclick="takeLoan(3)" style="border-color:rgba(168,85,247,0.5);background:rgba(168,85,247,0.08);">
+          <div class="ls-offer-amount" style="color:#a855f7;">⚡ 15.000 Blitze</div>
+          <div class="ls-offer-detail">Rückzahlung: ⚡ 52.500 · Laufzeit: <strong style="color:#fff">5 Minuten</strong></div>
+          <div class="ls-offer-danger" style="color:#a855f7;">💀 250% Zinsen – Lebensgefährlich</div>
+        </div>
+      </div>
+      <div class="ls-warn" id="lsWarnText">⚠ Achtung: Wenn du nicht rechtzeitig zurückzahlst, behalten wir alles was du hast. <strong style="color:#e74c3c">Keine Ausnahmen.</strong></div>
+      <button class="ls-skip" id="lsSkipBtn" onclick="closeLoanshark()">Nein danke, ich bin pleite</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ REPAY MODAL ═══════════ -->
+<div class="ls-modal-bg" id="repayModal" style="display:none;">
+  <div class="ls-modal" style="max-width:380px;">
+    <div class="ls-header">
+      <div class="ls-avatar">🦈</div>
+      <div class="ls-name">Schulden begleichen</div>
+    </div>
+    <div class="ls-body">
+      <div class="ls-quote" id="repayQuote">"Ich hoffe du hast das Geld dabei…"</div>
+      <div style="background:rgba(192,57,43,0.1);border:1px solid rgba(192,57,43,0.3);border-radius:4px;padding:1rem;margin-bottom:1rem;text-align:center;">
+        <div style="font-size:10px;letter-spacing:2px;color:rgba(255,100,100,0.6);text-transform:uppercase;margin-bottom:4px;">Offene Schulden</div>
+        <div style="font-family:'Oswald',sans-serif;font-size:2rem;font-weight:700;color:#e74c3c;" id="repayAmountDisp">⚡ 0</div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:4px;" id="repayTimeDisp">Verbleibende Zeit: --:--</div>
+      </div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:1rem;text-align:center;" id="repayBalInfo"></div>
+      <button onclick="confirmRepay()" style="width:100%;background:linear-gradient(135deg,#7c1a1a,#c0392b);border:none;color:#fff;font-family:'Oswald',sans-serif;font-size:1rem;font-weight:700;letter-spacing:2px;padding:14px;border-radius:2px;cursor:pointer;text-transform:uppercase;margin-bottom:8px;">💸 Jetzt vollständig zurückzahlen</button>
+      <button onclick="closeRepayModal()" style="width:100%;background:none;border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.3);font-family:'Montserrat',sans-serif;font-size:11px;padding:8px;border-radius:2px;cursor:pointer;letter-spacing:0.5px;">Zurück</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ GAME OVER (klassisch) ═══════════ -->
+<div class="gameover-screen" id="gameOverScreen" style="display:none;">
+  <div class="go-skull">💀</div>
+  <div class="go-title">GAME OVER</div>
+  <div class="go-sub" id="goSubText">Die Zeit ist abgelaufen. Big Samo ist nicht erfreut.</div>
+  <div class="go-debt-info">
+    <div class="go-debt-label">Gezahlte Zinsen insgesamt</div>
+    <div class="go-debt-amt" id="goDebtAmt">⚡ 0</div>
+  </div>
+  <div class="go-msg" id="goMsg"></div>
+  <button class="go-restart" onclick="showScoreScreen()">📊 Score ansehen</button>
+</div>
+
+<!-- ═══════════ HIGHSCORE / ENDURANCE SCREEN ═══════════ -->
+<div class="gameover-screen" id="scoreScreen" style="display:none;background:rgba(6,4,15,0.98);overflow-y:auto;justify-content:flex-start;padding-top:2.5rem;padding-bottom:2.5rem;">
+  <div class="go-skull" style="font-size:4rem;">🦈</div>
+  <div class="go-title" id="goTitle" style="color:var(--gold2);text-shadow:0 0 30px rgba(212,168,67,0.6);">DEIN ERGEBNIS</div>
+  <div class="go-sub" id="goScoreSub">Wie weit bist du gekommen?</div>
+
+  <div style="display:flex;gap:12px;margin-bottom:1.2rem;flex-wrap:wrap;justify-content:center;">
+    <div class="go-debt-info" style="min-width:130px;">
+      <div class="go-debt-label">Gezahlte Zinsen</div>
+      <div class="go-debt-amt" id="goTimeAmt" style="font-size:1.6rem;color:#a855f7;">⚡ 0</div>
+    </div>
+    <div class="go-debt-info" style="min-width:130px;">
+      <div class="go-debt-label">Schulden bei Crash</div>
+      <div class="go-debt-amt" id="goDebtAtCrash" style="color:#e74c3c;">⚡ 0</div>
+    </div>
+  </div>
+
+  <div id="goRankBadge" style="font-family:'Oswald',sans-serif;font-size:1.1rem;letter-spacing:3px;margin-bottom:1rem;padding:8px 24px;border-radius:3px;"></div>
+
+  <div class="go-msg" id="goScoreMsg" style="margin-bottom:1rem;"></div>
+
+  <!-- LEADERBOARD -->
+  <div id="goLeaderboard" style="width:100%;max-width:480px;background:rgba(0,0,0,0.4);border:1px solid rgba(212,168,67,0.25);border-radius:6px;overflow:hidden;margin-bottom:1.2rem;">
+    <div style="background:linear-gradient(90deg,rgba(212,168,67,0.15),rgba(124,58,237,0.1));padding:10px 16px;border-bottom:1px solid rgba(212,168,67,0.2);display:flex;align-items:center;gap:8px;">
+      <span style="font-size:1.1rem;">🏆</span>
+      <span style="font-family:'Oswald',sans-serif;font-size:0.95rem;letter-spacing:2px;color:var(--gold2);text-transform:uppercase;">Bestenliste</span>
+    </div>
+    <div id="lbList" style="max-height:220px;overflow-y:auto;"></div>
+  </div>
+
+  <button class="go-restart" onclick="restartAfterGameOver()">🔄 Nochmal versuchen</button>
+  <div style="font-size:11px;color:rgba(255,255,255,0.2);margin-top:12px;letter-spacing:1px;">Das Spiel endet nie. Wie weit kommst du?</div>
+</div>
+
+<style>
+/* ── CARD STYLES ── */
+.bj-card{
+  width:56px;height:84px;border-radius:6px;background:#fff;color:#111;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.4rem;font-weight:800;border:2px solid rgba(0,0,0,0.15);
+  position:relative;flex-shrink:0;box-shadow:0 4px 12px rgba(0,0,0,0.5);
+  animation:cardDeal 0.25s ease;
+}
+.bj-card.red{color:#c0392b;}
+.bj-card.back{background:linear-gradient(135deg,#1a0d35,#2e1060);color:rgba(255,255,255,0.2);font-size:2rem;border-color:rgba(124,58,237,0.5);}
+@keyframes cardDeal{from{transform:translateY(-20px) scale(0.8);opacity:0;}to{transform:none;opacity:1;}}
+/* ── ROULETTE CELLS ── */
+.rl-num{
+  padding:5px 2px;font-size:12px;font-weight:700;text-align:center;cursor:pointer;
+  border-radius:3px;border:1px solid rgba(255,255,255,0.1);transition:all 0.15s;
+  position:relative;user-select:none;
+}
+.rl-num:hover{transform:scale(1.08);z-index:2;}
+.rl-num .rl-chip-dot{
+  position:absolute;top:-5px;right:-5px;background:var(--gold2);color:#1a1000;
+  font-size:9px;font-weight:800;border-radius:50%;width:18px;height:18px;
+  display:flex;align-items:center;justify-content:center;
+}
+.rl-num.zero{background:rgba(26,138,74,0.5);border-color:rgba(39,174,96,0.4);color:#fff;grid-column:span 3;}
+.rl-out-btn{
+  padding:7px 4px;font-size:11px;font-weight:700;text-align:center;cursor:pointer;
+  border-radius:3px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.06);
+  color:rgba(255,255,255,0.7);transition:all 0.15s;letter-spacing:0.5px;
+}
+.rl-out-btn:hover{background:rgba(255,255,255,0.12);color:#fff;}
+/* Slot reel cells */
+.slot-cell{
+  height:80px;background:rgba(0,0,0,0.35);border-radius:4px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:2.4rem;overflow:hidden;position:relative;border:1px solid rgba(255,255,255,0.05);
+}
+.slot-cell.win-cell{border-color:var(--gold2);background:rgba(212,168,67,0.12);animation:cellGlow 0.6s ease 3;}
+@keyframes cellGlow{0%,100%{box-shadow:none;}50%{box-shadow:0 0 16px rgba(240,192,96,0.7);}}
+.slot-sym{transition:transform 0.08s;display:block;line-height:1;}
+</style>
+
+<script>
+const USERS=[{pw:'Demo1234',username:'RoyalDemo'},{pw:'Paul123',username:'Paul'}];
+let cUser=null,bal=0,bet=1,spinning=false,autoOn=false,autoTmr=null;
+let vipPts=0,totalGames=0,totalWins=0,gameHistory=[];
+let avatarColor='#7c3aed,#a855f7';
+
+// Loanshark state
+let loanDebt=0, loanDeadline=null, loanTimerInterval=null, loanCount=0;
+// Total interest paid tracking
+let totalInterestPaid=0;
+// Endurance tracking
+let sessionStart=null, sessionTimerInterval=null;
+const LOAN_OFFERS=[
+  {amount:500,   repay:900,   minutes:10, label:'80% Zinsen'},
+  {amount:2000,  repay:4200,  minutes:8,  label:'110% Zinsen'},
+  {amount:5000,  repay:12500, minutes:6,  label:'150% Zinsen'},
+  {amount:15000, repay:52500, minutes:5,  label:'250% Zinsen'},
+];
+
+const VIP_LEVELS=[
+  {name:'Bronze',icon:'🥉',badge:'vipCard-bronze',pts:0,next:500,nextName:'Silber'},
+  {name:'Silber',icon:'🥈',badge:'vipCard-silver',pts:500,next:2000,nextName:'Gold'},
+  {name:'Gold',icon:'🥇',badge:'vipCard-gold',pts:2000,next:5000,nextName:'Platinum'},
+  {name:'Platinum',icon:'💜',badge:'vipCard-platinum',pts:5000,next:10000,nextName:'Diamond'},
+  {name:'Diamond',icon:'💎',badge:'vipCard-diamond',pts:10000,next:null,nextName:null},
+];
+
+// risk: 'Niedrig'|'Mittel'|'Hoch'|'Extrem' — steigt mit vipReq
+// maxWin: Maximaler Multiplikator — steigt mit vipReq
+// gridSize per VIP tier: 0→1×3, 1→2×3, 2→2×4, 3→3×4, 4→3×5
+const VIP_GRID = [
+  {rows:1,cols:3},  // VIP 0
+  {rows:2,cols:3},  // VIP 1
+  {rows:2,cols:4},  // VIP 2
+  {rows:3,cols:4},  // VIP 3
+  {rows:3,cols:5},  // VIP 4
+];
+const GAMES=[
+  {n:"Feilen",e:"🔨",rtp:"50.1%",cat:["metall"],bg:"gt-green",newG:false,prov:"Metall Grundkurs",vipReq:0,risk:"Niedrig",maxWin:"5×",minBet:10,maxBet:100},
+  {n:"Bohrmaschine",e:"🔧​",rtp:"96.5%",cat:["popular","metall"],bg:"gt-blue",hot:false,prov:"Silber VIP",vipReq:1,risk:"Mittel",maxWin:"50×",minBet:50,maxBet:500},
+  {n:"Fraesmaschine",e:"⚙️​",rtp:"97.2%",cat:["popular","metall"],bg:"gt-purple",hot:true,prov:"Gold VIP",vipReq:2,risk:"Hoch",maxWin:"200×",minBet:100,maxBet:1000},
+  {n:"Drehmaschine",e:"🔩​",rtp:"98.1%",cat:["popular","metall"],bg:"gt-red",hot:true,prov:"Platinum VIP",vipReq:3,risk:"Sehr Hoch",maxWin:"1.000×",minBet:2500,maxBet:25000},
+  {n:"Schon wieder Feilen",e:"🔨",rtp:"99.5%",cat:["metall"],bg:"gt-gold",newG:false,prov:"Diamond VIP",vipReq:4,risk:"Extrem",maxWin:"2.000×",minBet:5000,maxBet:50000},
+  {n:"Loeten",e:"🖊️",rtp:"95.1%",cat:["elektro"],bg:"gt-green",newG:false,prov:"Elektro Grundkurs",vipReq:0,risk:"Niedrig",maxWin:"5×",minBet:10,maxBet:100},
+  {n:"Gravieren",e:"🖋️",rtp:"96.5%",cat:["elektro"],bg:"gt-blue",hot:true,prov:"Silber VIP",vipReq:1,risk:"Mittel",maxWin:"50×",minBet:50,maxBet:500},
+  {n:"Schaltung",e:"💡​",rtp:"97.2%",cat:["popular","elektro"],bg:"gt-purple",hot:false,prov:"Gold VIP",vipReq:2,risk:"Hoch",maxWin:"200×",minBet:100,maxBet:1000},
+  {n:"Programmieren",e:"💻​",rtp:"98.1%",cat:["popular","elektro"],bg:"gt-red",hot:true,prov:"Platinum VIP",vipReq:3,risk:"Sehr Hoch",maxWin:"1.000×",minBet:2500,maxBet:25000},
+  {n:"Sidequests",e:"🚲​",rtp:"99.5%",cat:["popular","elektro"],bg:"gt-gold",hot:true,prov:"Diamond VIP",vipReq:4,risk:"Extrem",maxWin:"2.000×",minBet:5000,maxBet:50000},
+  {n:"Alge",e:"🌿",rtp:"96.3%",cat:["sonstiges"],bg:"gt-teal",newG:true,prov:"FOS/BOS",vipReq:4,risk:"Niedrig",maxWin:"5×",minBet:1,maxBet:10},
+  {n:"Blackjack",e:"🃏",rtp:"99.5%",cat:["tischspiele"],bg:"gt-green",hot:true,prov:"NetEnt",vipReq:4,risk:"Hoch",maxWin:"200×",minBet:10,maxBet:100},
+  {n:"Roulette",e:"🎡",rtp:"97.3%",cat:["tischspiele"],bg:"gt-red",newG:false,prov:"NetEnt",vipReq:4,risk:"Mittel",maxWin:"35×",minBet:5,maxBet:50},
+];
+/* ════════════════════════════════════
+   SLOT ENGINE
+   ════════════════════════════════════ */
+// Each game has its own symbol set & paytable
+const GAME_CONFIGS = {
+  slot: {
+    syms:  ["🔊","⛏️","🕞","🛠️","⚙️","🔩","🔧","📟​","💥​"],
+    names: ["A","K","Uru","Auge","Vase","Mond","Stern","Buch","Scatter"],
+    pay:   {"🔊":2,"⛏️":3,"🕞":5,"🛠️":8,"⚙️":6,"🔩":10,"🔧":4,"📟​":25,"💥​":50},
+    weights:[8,7,7,5,5,4,4,3,2,1],
+    wild:"📟​", scatter:"💥​",
+  },
+    schaltung: {
+    syms:  ["🔌","💡","🔋","✏️","📏","📐","🔁","🖨️​","⚠️"],
+    names: ["A","K","Uru","Auge","Vase","Mond","Stern","Buch","Scatter"],
+    pay:   {"🔌":5,"💡":8,"🔋":15,"✏️":25,"📏":20,"📐":35,"🔁":12,"🖨️​":120,"⚠️":250},
+    weights:[8,7,7,5,5,4,4,3,2,1],
+    wild:"📟​", scatter:"💥​",
+  },
+  frasmaschine: {
+    syms:  ["🔨","🛢️","🕞","🛠️","⚙️","🔩","🔧","👓​","💥​"],
+    names: ["A","K","Uru","Auge","Vase","Mond","Stern","Buch","Scatter"],
+    pay:   {"🔨":5,"🛢️":8,"🕞":15,"🛠️":25,"⚙️":20,"🔩":35,"🔧":12,"👓​":120,"💥​":250},
+    weights:[8,7,7,5,5,4,4,3,2,1],
+    wild:"📟​", scatter:"💥​",
+  },
+    sidequests: {
+    syms:  ["🔩","🗡️","📯","🛡️","🎖️","📜","🔧","⛓️","🚲​"],
+    names: ["A","K","Uru","Auge","Vase","Mond","Stern","Buch","Scatter"],
+    pay:   {"🔩":3,"🗡️":5,"📯":8,"🛡️":12,"🎖️":10,"📜":18,"🔧":6,"⛓️​":50,"🚲​":100},
+    weights:[8,7,7,5,5,4,4,3,2,1],
+    wild:"⛓️​", scatter:"🚲​",
+  },
+  bohren: {
+    syms:  ["🔨","🛢️","🔊","🛠️","⚙️","🔩","🔧","👓​","💥​"],
+    names: ["A","K","Uru","Auge","Vase","Mond","Stern","Buch","Scatter"],
+    pay:   {"🔨":2,"🛢️":3,"🔊":5,"🛠️":8,"⚙️":6,"🔩":10,"🔧":4,"👓​":25,"💥​":50},
+    weights:[8,7,7,5,5,4,4,3,2,1],
+    wild:"📟​", scatter:"💥​",
+  },
+    programmieren: {
+    syms:  ["💻","⌨️","📁","📤","📝","📡","💾","🖱️​","✅"],
+    names: ["A","K","Uru","Auge","Vase","Mond","Stern","Buch","Scatter"],
+    pay:   {"💻":10,"⌨️":18,"📁":40,"📤":80,"📝":60,"📡":120,"💾":200,"🖱️​":400,"✅​":1000},
+    weights:[8,7,7,5,5,4,4,3,2,1],
+    wild:"🖱️​", scatter:"✅​",
+  },
+    gravieren: {
+    syms:  ["🔌","💡","🕞","💥","⚙️","🔩","🔧","👓​","🖼️​"],
+    names: ["A","K","Uru","Auge","Vase","Mond","Stern","Buch","Scatter"],
+    pay:   {"🔌":3,"💡":5,"🕞":8,"💥":12,"⚙️":10,"🔩":18,"🔧":6,"👓​":50,"🖼️​":100},
+    weights:[8,7,7,5,5,4,4,3,2,1],
+    wild:"📟​", scatter:"💥​",
+  },
+    feilen: {
+    syms:  ["🕧","🕦","🕒","🕐","🕑","🕘","🕚","🔔​","🔨"],
+    names: ["A","K","Uru","Auge","Vase","Mond","Stern","Buch","Scatter"],
+    pay:   {"🕧":0,"🕦":0,"🕒":0,"🕐":0,"🕑":0,"🕘":0,"🕚":0,"🔔​":500,"🔨":10000},
+    weights:[8,7,7,5,5,4,4,3,2,1],
+    wild:"📟​", scatter:"💥​",
+  },
+  schonwiederfeilen: {
+    syms:  ["🕧","🕦","🕒","🕐","🕑","🕘","🕚","🔔​","🔨"],
+    names: ["A","K","Uru","Auge","Vase","Mond","Stern","Buch","Scatter"],
+    pay:   {"🕧":0,"🕦":0,"🕒":0,"🕐":0,"🕑":0,"🕘":0,"🕚":0,"🔔​":500,"🔨":10000},
+    weights:[8,7,7,5,5,4,4,3,2,1],
+    wild:"📟​", scatter:"💥​",
+  },
+   loten: {
+    syms:  ["🖊️","🔌","♨️","💨","〰️","👓","🔴","🔔​","🖼️"],
+    names: ["A","K","Uru","Auge","Vase","Mond","Stern","Buch","Scatter"],
+    pay:   {"🖊️":2,"🔌":3,"♨️":5,"💨":8,"〰️":6,"👓":10,"🔴":4,"🔔​":25,"🖼️":50},
+    weights:[8,7,7,5,5,4,4,3,2,1],
+    wild:"📟​", scatter:"💥​",
+  },
+    drehmaschine: {
+    syms:  ["🔨","🛢️","🕞","🛠️","⚙️","🔩","🔧","📟​","💥​"],
+    names: ["A","K","Uru","Auge","Vase","Mond","Stern","Buch","Scatter"],
+    pay:   {"🔨":10,"🛢️":18,"🕞":40,"🛠️":80,"⚙️":60,"🔩":120,"🔧":30,"📟​":400,"💥​":1000},
+    weights:[8,7,7,5,5,4,4,3,2,1],
+    wild:"📟​", scatter:"💥​",
+  },
+  bookofpharaoh: {
+    syms:  ["🅰","🅺","🅺","📜","🔨","⚙️","🔩","🔧","🛠️​","💥​"],
+    names: ["A","K","K","Uru","Auge","Vase","Mond","Stern","Buch","Scatter"],
+    pay:   {"🅰":2,"🅺":3,"📜":5,"🔨":8,"⚙️":6,"🔩":10,"🔧":4,"🛠️​":25,"💥​":50},
+    weights:[8,7,7,5,5,4,4,3,2,1],
+    wild:"🛠️​", scatter:"💥​",
+  },
+  bookofrae: {
+    syms:  ["🅰","🅺","🅺","🗡","🐍","🌸","🌑","📖","⚜","✨"],
+    pay:   {"🅰":2,"🅺":3,"🗡":5,"🐍":7,"🌸":6,"🌑":10,"📖":20,"⚜":40,"✨":80},
+    weights:[8,7,7,5,4,4,3,2,2,1],
+    wild:"📖", scatter:"✨",
+  },
+  alge: {
+    syms:  ["🌱","🌿","🍀","🌊","🐟","🦑","🐙","🌺","💎","🧬"],
+    pay:   {"🌱":5,"🌿":8,"🍀":15,"🌊":25,"🐟":40,"🦑":80,"🐙":150,"🌺":300,"💎":800,"🧬":10000},
+    weights:[8,7,6,6,5,4,3,3,2,1],
+    wild:"💎", scatter:"🧬",
+  },
+};
+
+// Dynamic paylines depending on rows x cols
+function getPaylines(rows, cols) {
+  if (rows === 1) {
+    return [ Array(cols).fill(0) ]; // 1 line
+  }
+  if (rows === 2 && cols === 3) {
+    return [
+      [0,0,0],
+      [1,1,1],
+      [0,1,0],
+    ]; // 3 lines
+  }
+  if (rows === 2 && cols === 4) {
+    return [
+      [0,0,0,0],
+      [1,1,1,1],
+      [0,1,1,0],
+      [1,0,0,1],
+    ]; // 4 lines
+  }
+  if (rows === 3 && cols === 4) {
+    return [
+      [1,1,1,1],
+      [0,0,0,0],
+      [2,2,2,2],
+      [0,1,2,1],
+      [2,1,0,1],
+      [0,0,1,2],
+    ]; // 6 lines
+  }
+  // 3x5: 9 lines (original)
+  return [
+    [1,1,1,1,1],
+    [0,0,0,0,0],
+    [2,2,2,2,2],
+    [0,1,2,1,0],
+    [2,1,0,1,2],
+    [0,0,1,2,2],
+    [2,2,1,0,0],
+    [1,0,0,0,1],
+    [1,2,2,2,1],
+  ];
+}
+
+let slotGrid = []; // variable rows x cols
+let currentCfg = GAME_CONFIGS.slot;
+let currentGameType = 'slot'; // 'slot'|'blackjack'|'roulette'
+let currentGame = null; // reference to the active GAMES entry
+
+// Bet chip configs per tier (minBet → maxBet)
+const TIER_CHIPS = {
+  0: [10, 20, 50, 100],
+  1: [50, 100, 250, 500],
+  2: [100, 250, 500, 1000],
+  3: [2500, 5000, 10000, 25000],
+  4: [5000, 10000, 25000, 50000],
+};
+
+function renderBetChips(g) {
+  const tier = g.vipReq || 0;
+  const chips = TIER_CHIPS[tier] || TIER_CHIPS[0];
+  const container = document.getElementById('slotBetChips');
+  if (!container) return;
+  container.innerHTML = '';
+  chips.forEach((v, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'bet-chip' + (i === 0 ? ' active' : '');
+    btn.textContent = '⚡' + v;
+    btn.onclick = function(){ slotSetBet(v, btn); };
+    container.appendChild(btn);
+  });
+  // Set default bet to minBet
+  bet = chips[0];
+  document.getElementById('betDisp').textContent = '⚡ ' + chips[0];
+}
+
+function pickSym(cfg){
+  const total = cfg.weights.reduce((a,b)=>a+b,0);
+  let r = Math.random()*total, cumul=0;
+  for(let i=0;i<cfg.syms.length;i++){cumul+=cfg.weights[i];if(r<cumul)return cfg.syms[i];}
+  return cfg.syms[0];
+}
+
+function buildSlotGrid(cfg){
+  const grid_size = VIP_GRID[currentGame ? (currentGame.vipReq||0) : 0];
+  const rows = grid_size.rows, cols = grid_size.cols;
+  slotGrid=[];
+  for(let row=0;row<rows;row++){
+    slotGrid[row]=[];
+    for(let col=0;col<cols;col++) slotGrid[row][col]=pickSym(cfg);
+  }
+}
+
+function renderSlotGrid(animate){
+  const grid_size = VIP_GRID[currentGame ? (currentGame.vipReq||0) : 0];
+  const rows = grid_size.rows, cols = grid_size.cols;
+  const grid=document.getElementById('reelGrid');
+  // update CSS grid columns to match current game size
+  grid.style.gridTemplateColumns = `repeat(${cols},1fr)`;
+  // keep overlay
+  const overlay=document.getElementById('winLineOverlay');
+  grid.innerHTML='';
+  grid.appendChild(overlay);
+  overlay.innerHTML='';
+  // build rows x cols (column-major for reel effect)
+  for(let col=0;col<cols;col++){
+    for(let row=0;row<rows;row++){
+      const cell=document.createElement('div');
+      cell.className='slot-cell';
+      cell.id=`sc_${row}_${col}`;
+      const span=document.createElement('span');
+      span.className='slot-sym';
+      span.textContent=slotGrid[row][col];
+      cell.appendChild(span);
+      grid.appendChild(cell);
+    }
+  }
+}
+
+function buildPT(){
+  const g=document.getElementById('ptGrid');g.innerHTML='';
+  const cfg=currentCfg;
+  const grid_size = VIP_GRID[currentGame ? (currentGame.vipReq||0) : 0];
+  const minMatch = grid_size.cols <= 3 ? 2 : 3;
+  const ptHead = document.querySelector('.pt-head');
+  if(ptHead) ptHead.textContent = `Gewinntabelle – mind. ${minMatch} gleiche auf Linie`;
+  Object.entries(cfg.pay).sort((a,b)=>b[1]-a[1]).forEach(([s,m])=>{
+    g.innerHTML+=`<div class="pt-row"><span class="pt-s">${s}</span><span style="color:rgba(255,255,255,0.5);font-size:11px;">${minMatch}× </span><span class="pt-x">×${m}</span>${grid_size.cols>=4?`<span style="color:rgba(255,255,255,0.5);font-size:11px;"> 4× </span><span class="pt-x">×${m*3}</span>`:''}${grid_size.cols>=5?`<span style="color:rgba(255,255,255,0.5);font-size:11px;"> 5× </span><span class="pt-x">×${m*6}</span>`:''}</div>`;
+  });
+  if(cfg.wild) g.innerHTML+=`<div class="pt-row"><span class="pt-s">${cfg.wild}</span><span style="color:var(--gold);font-size:11px;">WILD – ersetzt alle</span></div>`;
+  if(cfg.scatter) g.innerHTML+=`<div class="pt-row"><span class="pt-s">${cfg.scatter}</span><span style="color:var(--gold);font-size:11px;">BONUS – ${minMatch}+ = Multiplikator-Bonus</span></div>`;
+}
+
+function slotSetBet(v,el){bet=v;document.querySelectorAll('.bet-chip').forEach(b=>b.classList.remove('active'));el.classList.add('active');document.getElementById('betDisp').textContent=fmt(v);}
+
+function animateReels(onDone){
+  const grid_size = VIP_GRID[currentGame ? (currentGame.vipReq||0) : 0];
+  const rows = grid_size.rows, cols = grid_size.cols;
+  let done=0;
+  for(let col=0;col<cols;col++){
+    (function(c){
+      let flips=0,maxFlips=8+c*4;
+      const interval=setInterval(()=>{
+        for(let row=0;row<rows;row++){
+          const el=document.getElementById(`sc_${row}_${c}`);
+          if(el) el.querySelector('.slot-sym').textContent=pickSym(currentCfg);
+        }
+        flips++;
+        if(flips>=maxFlips){
+          clearInterval(interval);
+          // set final
+          for(let row=0;row<rows;row++){
+            const el=document.getElementById(`sc_${row}_${c}`);
+            if(el) el.querySelector('.slot-sym').textContent=slotGrid[row][c];
+          }
+          done++;
+          if(done===cols) onDone();
+        }
+      },60);
+    })(col);
+  }
+}
+
+function checkSlotWin(){
+  const cfg=currentCfg;
+  const grid_size = VIP_GRID[currentGame ? (currentGame.vipReq||0) : 0];
+  const rows = grid_size.rows, cols = grid_size.cols;
+  const PAYLINES = getPaylines(rows, cols);
+  let totalWinAmt=0;
+  const winCells=new Set();
+  let scatterCount=0;
+
+  // count scatters anywhere
+  if(cfg.scatter){
+    for(let r=0;r<rows;r++) for(let c=0;c<cols;c++) if(slotGrid[r][c]===cfg.scatter) scatterCount++;
+  }
+
+  PAYLINES.forEach((line)=>{
+    // collect symbols on this line
+    const lineSyms=line.map((row,col)=>slotGrid[row][col]);
+    // find longest run from left, wilds count
+    const first = cfg.wild && lineSyms[0]===cfg.wild ? (lineSyms.find(s=>s!==cfg.wild)||lineSyms[0]) : lineSyms[0];
+    let count=0;
+    for(let i=0;i<cols;i++){
+      const s=lineSyms[i];
+      if(s===first||(cfg.wild&&s===cfg.wild)) count++;
+      else break;
+    }
+    const minMatch = cols <= 3 ? 2 : 3; // on small grids, 2 in a row wins
+    if(count>=minMatch && cfg.pay[first]){
+      const mult = count===2?0.5:count===3?1:count===4?3:6;
+      const win = bet * cfg.pay[first] * mult;
+      totalWinAmt += win;
+      for(let i=0;i<count;i++) winCells.add(`${line[i]}_${i}`);
+    }
+  });
+
+  // scatter wins
+  if(scatterCount>=2){
+    totalWinAmt += bet * 10 * scatterCount;
+    for(let r=0;r<rows;r++) for(let c=0;c<cols;c++) if(slotGrid[r][c]===cfg.scatter) winCells.add(`${r}_${c}`);
+  }
+
+  // highlight win cells
+  winCells.forEach(key=>{
+    const [r,c]=key.split('_');
+    const el=document.getElementById(`sc_${r}_${c}`);
+    if(el) el.classList.add('win-cell');
+  });
+
+  return {win:totalWinAmt, scatter:scatterCount};
+}
+
+function doSpin(){
+  if(spinning)return;
+  if(currentGame){
+    if(bet < (currentGame.minBet||1)){showToast('Mindesteinsatz: ⚡'+(currentGame.minBet||1),'#e67e22');return;}
+    if(bet > (currentGame.maxBet||10000)){showToast('Maximaleinsatz: ⚡'+(currentGame.maxBet||10000),'#e67e22');return;}
+  }
+  if(bal<bet){document.getElementById('wMsg').textContent='Nicht genug Guthaben!';document.getElementById('wMsg').className='win-msg no-win';return;}
+  bal-=bet;updBal();spinning=true;
+  document.getElementById('spinBtn').disabled=true;
+  document.getElementById('wMsg').textContent='';
+  totalGames++;
+
+  // clear win highlights
+  document.querySelectorAll('.slot-cell').forEach(c=>c.classList.remove('win-cell'));
+
+  buildSlotGrid(currentCfg);
+  animateReels(()=>{
+    const {win, scatter}=checkSlotWin();
+    let msg='',cls='';
+    if(win>0){
+      bal+=win;updBal();totalWins++;
+      if(win>=bet*10){msg=`🏆 BIG WIN! +${fmt(win)}`;cls='win-msg win-big';}
+      else{msg=`✓ Gewinn! +${fmt(win)}`;cls='win-msg win-sm';}
+      if(scatter>=3) msg+=' · 🎰 BONUS x' + scatterCount + '!';
+    } else if(scatter>=3){
+      msg='🎰 BONUS aktiviert! x' + scatterCount + ' Multiplikator!';cls='win-msg win-sm';
+    } else{
+      msg='Kein Gewinn';cls='win-msg no-win';
+    }
+    vipPts+=Math.floor(bet/10)||0;
+    const now=new Date();
+    const dateStr=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
+    gameHistory.unshift({game:document.getElementById('sTitle').textContent,bet,win:win-bet,date:dateStr});
+    if(gameHistory.length>20)gameHistory.pop();
+    document.getElementById('wMsg').textContent=msg;
+    document.getElementById('wMsg').className=cls;
+    spinning=false;
+    document.getElementById('spinBtn').disabled=false;
+    persistData();
+    if(autoOn) autoTmr=setTimeout(()=>{if(!spinning)doSpin();},900);
+  });
+}
+
+function toggleAuto(){autoOn=!autoOn;document.getElementById('autoBtn').classList.toggle('on',autoOn);if(autoOn&&!spinning)doSpin();}
+function stopAuto(){autoOn=false;const b=document.getElementById('autoBtn');if(b)b.classList.remove('on');if(autoTmr){clearTimeout(autoTmr);autoTmr=null;}}
+function togglePT(){document.getElementById('payTab').classList.toggle('open');}
+
+/* ════════════════════════════════════
+   BLACKJACK ENGINE
+   ════════════════════════════════════ */
+const SUITS=['♠','♥','♦','♣'];
+const RANKS=['A','2','3','4','5','6','7','8','9','10','J','Q','K'];
+let bjDeck=[], bjPlayer=[], bjDealer=[], bjBet=0, bjPhase='bet'; // bet|play|done
+
+function bjBuildDeck(){
+  bjDeck=[];
+  for(let d=0;d<6;d++) // 6-deck shoe
+    for(const s of SUITS)for(const r of RANKS) bjDeck.push({r,s});
+  // shuffle
+  for(let i=bjDeck.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[bjDeck[i],bjDeck[j]]=[bjDeck[j],bjDeck[i]];}
+}
+
+function bjCardVal(card){
+  if(card.r==='A') return 11;
+  if(['K','Q','J'].includes(card.r)) return 10;
+  return parseInt(card.r);
+}
+
+function bjHandVal(hand){
+  let total=hand.reduce((s,c)=>s+bjCardVal(c),0);
+  let aces=hand.filter(c=>c.r==='A').length;
+  while(total>21&&aces>0){total-=10;aces--;}
+  return total;
+}
+
+function bjCardHTML(card, facedown=false){
+  if(facedown) return `<div class="bj-card back">🂠</div>`;
+  const red=['♥','♦'].includes(card.s);
+  return `<div class="bj-card ${red?'red':''}">${card.r}${card.s}</div>`;
+}
+
+function bjRender(dealerHideSecond=false){
+  document.getElementById('dealerCards').innerHTML=bjDealer.map((c,i)=>bjCardHTML(c,dealerHideSecond&&i===1)).join('');
+  document.getElementById('playerCards').innerHTML=bjPlayer.map(c=>bjCardHTML(c)).join('');
+  const pv=bjHandVal(bjPlayer);
+  const dv=dealerHideSecond?bjCardVal(bjDealer[0]):bjHandVal(bjDealer);
+  document.getElementById('playerTotal').textContent=pv>0?`(${pv})`:'';
+  document.getElementById('dealerTotal').textContent=bjDealer.length>0?`(${dealerHideSecond?bjCardVal(bjDealer[0]):dv})`:'';
+}
+
+function bjAddBet(v){
+  if(bjPhase!=='bet')return;
+  if(bjBet+v>bal){showToast('Nicht genug Guthaben!','#c0392b');return;}
+  bjBet+=v;
+  document.getElementById('bjBetDisp').textContent=fmt(bjBet);
+}
+function bjClearBet(){if(bjPhase!=='bet')return;bjBet=0;document.getElementById('bjBetDisp').textContent=fmt(0);}
+
+function bjSetActions(actions){
+  const el=document.getElementById('bjActions');
+  el.innerHTML='';
+  if(actions.includes('deal'))
+    el.innerHTML+=`<button class="spin-btn" style="background:linear-gradient(135deg,#1a8a4a,#27ae60);" onclick="bjDeal()">DEAL</button>`;
+  if(actions.includes('hit'))
+    el.innerHTML+=`<button class="spin-btn" style="background:linear-gradient(135deg,#1a3a8a,#2760ae);" onclick="bjHit()">HIT</button>`;
+  if(actions.includes('stand'))
+    el.innerHTML+=`<button class="spin-btn" style="background:linear-gradient(135deg,#6a1a1a,#ae2727);" onclick="bjStand()">STAND</button>`;
+  if(actions.includes('double'))
+    el.innerHTML+=`<button class="auto-btn" onclick="bjDouble()">DOUBLE</button>`;
+  if(actions.includes('new'))
+    el.innerHTML+=`<button class="spin-btn" style="background:linear-gradient(135deg,#1a8a4a,#27ae60);flex:1;" onclick="bjNew()">NEUE RUNDE</button>`;
+}
+
+function bjDeal(){
+  if(bjBet<1){showToast('Setze zuerst einen Einsatz!','#c0392b');return;}
+  if(bjBet>bal){showToast('Nicht genug Guthaben!','#c0392b');return;}
+  if(bjDeck.length<20) bjBuildDeck();
+  bal-=bjBet;updBal();
+  bjPhase='play';
+  bjPlayer=[bjDeck.pop(),bjDeck.pop()];
+  bjDealer=[bjDeck.pop(),bjDeck.pop()];
+  document.getElementById('bjBetChips').style.display='none';
+  bjRender(true);
+  const pv=bjHandVal(bjPlayer);
+  if(pv===21){
+    document.getElementById('bjStatus').textContent='BLACKJACK!';
+    setTimeout(()=>bjRevealDealer(),600);
+  } else {
+    document.getElementById('bjStatus').textContent='Dein Zug';
+    const canDouble=bal>=bjBet;
+    bjSetActions(['hit','stand',...(canDouble?['double']:[])]); 
+  }
+  totalGames++;
+}
+
+function bjHit(){
+  bjPlayer.push(bjDeck.pop());
+  bjRender(true);
+  const pv=bjHandVal(bjPlayer);
+  if(pv>21){document.getElementById('bjStatus').textContent='BUST! Überkauft!';bjRevealDealer();}
+  else if(pv===21){document.getElementById('bjStatus').textContent='21!';bjRevealDealer();}
+}
+
+function bjDouble(){
+  if(bal<bjBet){showToast('Nicht genug Guthaben!','#c0392b');return;}
+  bal-=bjBet;bjBet*=2;updBal();
+  document.getElementById('bjBetDisp').textContent=fmt(bjBet);
+  bjPlayer.push(bjDeck.pop());
+  bjRender(true);
+  bjRevealDealer();
+}
+
+function bjStand(){bjRevealDealer();}
+
+function bjRevealDealer(){
+  bjPhase='done';
+  bjRender(false);
+  // dealer draws to 17
+  const dealerPlay=()=>{
+    const dv=bjHandVal(bjDealer);
+    if(dv<17){
+      setTimeout(()=>{bjDealer.push(bjDeck.pop());bjRender(false);dealerPlay();},600);
+    } else bjResolve();
+  };
+  setTimeout(dealerPlay,400);
+}
+
+function bjResolve(){
+  const pv=bjHandVal(bjPlayer);
+  const dv=bjHandVal(bjDealer);
+  const isBlackjack=bjPlayer.length===2&&pv===21;
+  let msg='',win=0;
+  if(pv>21){msg='BUST – Verloren!';win=0;}
+  else if(dv>21){msg='Dealer BUST – Gewonnen!';win=bjBet*2;totalWins++;}
+  else if(pv===dv){msg='PUSH – Unentschieden';win=bjBet;}
+  else if(pv>dv){
+    if(isBlackjack){msg='🃏 BLACKJACK! 3:2 Gewinn!';win=Math.floor(bjBet*2.5);} 
+    else{msg='Gewonnen!';win=bjBet*2;}
+    totalWins++;
+  } else{msg='Dealer gewinnt – Verloren!';win=0;}
+  
+  if(win>0){bal+=win;updBal();}
+  document.getElementById('bjStatus').textContent=msg;
+  vipPts+=Math.floor(bjBet/10)||0;
+  const now=new Date();
+  gameHistory.unshift({game:'Blackjack',bet:bjBet,win:win-bjBet,date:now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0')});
+  if(gameHistory.length>20)gameHistory.pop();
+  persistData();
+  bjSetActions(['new']);
+}
+
+function bjNew(){
+  bjPhase='bet';bjBet=0;bjPlayer=[];bjDealer=[];
+  document.getElementById('bjStatus').textContent='Setze deinen Einsatz';
+  document.getElementById('bjBetDisp').textContent=fmt(0);
+  document.getElementById('dealerCards').innerHTML='';
+  document.getElementById('playerCards').innerHTML='';
+  document.getElementById('playerTotal').textContent='';
+  document.getElementById('dealerTotal').textContent='';
+  document.getElementById('bjBetChips').style.display='';
+  bjSetActions(['deal']);
+}
+
+/* ════════════════════════════════════
+   ROULETTE ENGINE
+   ════════════════════════════════════ */
+const RL_REDS=[1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36];
+const RL_SEQUENCE=[0,32,15,19,4,21,2,25,17,34,6,27,13,36,11,30,8,23,10,5,24,16,33,1,20,14,31,9,22,18,29,7,28,12,35,3,26];
+let rlChip=10, rlBets=[], rlSpinning=false, rlAngle=0, rlAnimId=null;
+
+function rlBuildTable(){
+  const t=document.getElementById('rlTable');
+  t.innerHTML=`<div class="rl-num zero" onclick="rlBetNum(0)">0</div>`;
+  // numbers 1-36 in 3 columns (1,2,3 | 4,5,6 ...)
+  for(let n=1;n<=36;n++){
+    const red=RL_REDS.includes(n);
+    t.innerHTML+=`<div class="rl-num" id="rln${n}" style="background:rgba(${red?'180,30,30':'20,20,20'},0.5);border-color:rgba(${red?'200,50,50':'80,80,80'},0.4);color:#fff;" onclick="rlBetNum(${n})">${n}</div>`;
+  }
+}
+
+function rlSetChip(v,el){rlChip=v;document.getElementById('rlChipDisp').textContent=fmt(v);document.querySelectorAll('.bet-chip').forEach(b=>b.classList.remove('active'));el.classList.add('active');}
+function rlBetNum(n){rlAddBet({type:'num',num:n,label:`Nr. ${n}`,mult:36});}
+function rlBetOut(type,label,mult){rlAddBet({type,label,mult});}
+
+function rlAddBet(b){
+  if(rlSpinning)return;
+  if(rlChip>bal){showToast('Nicht genug Guthaben!','#c0392b');return;}
+  // merge with existing same-type bet
+  const ex=rlBets.find(x=>x.type===b.type&&x.num===b.num);
+  if(ex){ex.amount+=rlChip;}
+  else{rlBets.push({...b,amount:rlChip});}
+  // update chip dot on number
+  if(b.type==='num'){
+    const el=document.getElementById('rln'+b.num)||document.querySelector('.rl-num.zero');
+    if(el){let d=el.querySelector('.rl-chip-dot');if(!d){d=document.createElement('div');d.className='rl-chip-dot';el.appendChild(d);}const ex2=rlBets.find(x=>x.type==='num'&&x.num===b.num);d.textContent=ex2.amount;}
+  }
+  rlUpdateBetList();
+}
+
+function rlClearBets(){
+  rlBets=[];
+  document.querySelectorAll('.rl-chip-dot').forEach(d=>d.remove());
+  rlUpdateBetList();
+}
+
+function rlUpdateBetList(){
+  const total=rlBets.reduce((s,b)=>s+b.amount,0);
+  document.getElementById('rlBetList').textContent=rlBets.length?`${rlBets.length} Einsätze · Gesamt: ${fmt(total)}`:'Noch keine Einsätze';
+}
+
+function rlNumColor(n){if(n===0)return'green';return RL_REDS.includes(n)?'red':'black';}
+
+function rlSpin(){
+  if(rlSpinning)return;
+  const total=rlBets.reduce((s,b)=>s+b.amount,0);
+  if(total<1){showToast('Setze zuerst einen Chip!','#c0392b');return;}
+  if(total>bal){showToast('Nicht genug Guthaben!','#c0392b');return;}
+  bal-=total;updBal();
+  rlSpinning=true;
+  document.getElementById('rlSpinBtn').disabled=true;
+  document.getElementById('rlResult').textContent='';
+  totalGames++;
+
+  // spin animation
+  const result=Math.floor(Math.random()*37);
+  const targetIdx=RL_SEQUENCE.indexOf(result);
+  const targetAngle=360*(6+Math.random())+(targetIdx/37)*360;
+  let startAngle=rlAngle, startTime=null, duration=4000;
+
+  function frame(ts){
+    if(!startTime) startTime=ts;
+    const progress=Math.min((ts-startTime)/duration,1);
+    const ease=1-Math.pow(1-progress,4);
+    rlAngle=startAngle+targetAngle*ease;
+    drawWheel(rlAngle);
+    if(progress<1){rlAnimId=requestAnimationFrame(frame);}
+    else{
+      rlAngle=startAngle+targetAngle;
+      drawWheel(rlAngle);
+      rlResolve(result);
+    }
+  }
+  rlAnimId=requestAnimationFrame(frame);
+}
+
+function drawWheel(angleDeg){
+  const canvas=document.getElementById('rlCanvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const cx=80,cy=80,r=76,r2=50;
+  ctx.clearRect(0,0,160,160);
+  const n=37;
+  for(let i=0;i<n;i++){
+    const num=RL_SEQUENCE[i];
+    const start=(angleDeg*Math.PI/180)+i*(2*Math.PI/n);
+    const end=start+(2*Math.PI/n);
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,start,end);ctx.closePath();
+    ctx.fillStyle=num===0?'#1a8a4a':(RL_REDS.includes(num)?'#8b1a1a':'#111');
+    ctx.fill();ctx.strokeStyle='rgba(212,168,67,0.3)';ctx.lineWidth=0.5;ctx.stroke();
+    // number text
+    ctx.save();ctx.translate(cx,cy);ctx.rotate(start+(Math.PI/n));
+    ctx.translate(r-18,0);ctx.rotate(Math.PI/2);
+    ctx.fillStyle='#fff';ctx.font='bold 9px Montserrat';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(num,0,0);ctx.restore();
+  }
+  // center circle
+  ctx.beginPath();ctx.arc(cx,cy,16,0,Math.PI*2);
+  ctx.fillStyle='linear-gradient'; // just use solid
+  const g=ctx.createRadialGradient(cx,cy,4,cx,cy,16);
+  g.addColorStop(0,'#f0c060');g.addColorStop(1,'#7c3aed');
+  ctx.fillStyle=g;ctx.fill();
+  ctx.strokeStyle='rgba(212,168,67,0.8)';ctx.lineWidth=2;ctx.stroke();
+  // pointer triangle at top
+  ctx.beginPath();ctx.moveTo(cx-8,4);ctx.lineTo(cx+8,4);ctx.lineTo(cx,20);ctx.closePath();
+  ctx.fillStyle='var(--gold2)';ctx.fill=()=>{};
+  ctx.fillStyle='#f0c060';ctx.fill();
+}
+
+function rlResolve(result){
+  const color=rlNumColor(result);
+  document.getElementById('rlBallNum').textContent=result;
+  document.getElementById('rlBallNum').style.color=color==='red'?'#e74c3c':color==='green'?'#27ae60':'#fff';
+
+  let totalWinAmt=0;
+  rlBets.forEach(b=>{
+    let win=false;
+    if(b.type==='num') win=b.num===result;
+    else if(b.type==='red') win=color==='red';
+    else if(b.type==='black') win=color==='black';
+    else if(b.type==='even') win=result>0&&result%2===0;
+    else if(b.type==='odd') win=result>0&&result%2===1;
+    else if(b.type==='1-18') win=result>=1&&result<=18;
+    else if(b.type==='19-36') win=result>=19&&result<=36;
+    else if(b.type==='1doz') win=result>=1&&result<=12;
+    else if(b.type==='2doz') win=result>=13&&result<=24;
+    else if(b.type==='3doz') win=result>=25&&result<=36;
+    if(win) totalWinAmt+=b.amount*b.mult;
+  });
+
+  if(totalWinAmt>0){bal+=totalWinAmt;updBal();totalWins++;
+    document.getElementById('rlResult').textContent=`🎯 ${result} ${color==='red'?'ROT':'SCHWARZ'} – Gewinn: ${fmt(totalWinAmt)}!`;
+    document.getElementById('rlResult').style.color='var(--gold2)';
+  } else{
+    document.getElementById('rlResult').textContent=`${result} ${color==='red'?'ROT':'SCHWARZ'} – Kein Gewinn`;
+    document.getElementById('rlResult').style.color='rgba(255,255,255,0.4)';
+  }
+
+  const totalBet=rlBets.reduce((s,b)=>s+b.amount,0);
+  vipPts+=Math.floor(totalBet/10)||0;
+  const now=new Date();
+  gameHistory.unshift({game:'Roulette',bet:totalBet,win:totalWinAmt-totalBet,date:now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0')});
+  if(gameHistory.length>20)gameHistory.pop();
+  persistData();
+  rlSpinning=false;
+  document.getElementById('rlSpinBtn').disabled=false;
+  // clear bets for next round
+  rlBets=[];
+  document.querySelectorAll('.rl-chip-dot').forEach(d=>d.remove());
+  rlUpdateBetList();
+}
+
+/* ── STORAGE ── */
+let avatarImg=null;
+function saveKey(username){return 'casino_'+username.replace(/[^a-z0-9]/gi,'_');}
+function persistData(){
+  if(!cUser)return;
+  const data={bal,vipPts,totalGames,totalWins,gameHistory:gameHistory.slice(0,20),
+    avatarColor,avatarImg:avatarImg||null,
+    profile:{username:cUser.username,bio:cUser.bio||''},
+    loanDebt:loanDebt||0, loanDeadline:loanDeadline||null, loanCount:loanCount||0};
+  localStorage.setItem(saveKey(cUser.username),JSON.stringify(data));
+}
+function loadData(){
+  if(!cUser)return;
+  try{
+    const raw=localStorage.getItem(saveKey(cUser.username));
+    if(!raw)return;
+    const d=JSON.parse(raw);
+    // Guthaben und VIP werden IMMER auf 0 zurückgesetzt beim Login – nur Profil bleibt
+    avatarColor=d.avatarColor??'#7c3aed,#a855f7';avatarImg=d.avatarImg||null;
+    if(d.profile){cUser.username=d.profile.username;cUser.bio=d.profile.bio||'';}
+    // bal, vipPts, totalGames, totalWins, gameHistory, loanDebt, loanDeadline bleiben auf 0/reset
+  }catch(e){}
+}
+
+/* ── TOAST ── */
+function showToast(msg,color){
+  const t=document.getElementById('saveToast');
+  t.textContent=msg||'✓ Gespeichert!';t.style.background=color||'#1a8a4a';
+  t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+/* ── PAGES ── */
+function showPage(pg){
+  document.querySelectorAll('.subpage').forEach(s=>{s.style.display='none';s.classList.remove('active');});
+  const el=document.getElementById('page-'+pg);
+  if(el){el.style.display='block';el.classList.add('active');}
+  if(pg==='vip')refreshVip();
+  if(pg==='profile')refreshProfile();
+}
+
+/* ── VIP ── */
+function getVipLevel(){
+  for(let i=VIP_LEVELS.length-1;i>=0;i--){if(vipPts>=VIP_LEVELS[i].pts)return VIP_LEVELS[i];}
+  return VIP_LEVELS[0];
+}
+function refreshVip(){
+  const lv=getVipLevel();
+  document.getElementById('vipLevelName').textContent=lv.name;
+  const progress=lv.next?Math.min(100,((vipPts-lv.pts)/(lv.next-lv.pts))*100):100;
+  document.getElementById('vipProgressFill').style.width=progress+'%';
+  document.getElementById('vipPtsLabel').textContent=lv.next
+    ?vipPts.toLocaleString('de-DE')+' / '+lv.next.toLocaleString('de-DE')+' Punkte → '+lv.nextName
+    :vipPts.toLocaleString('de-DE')+' Punkte';
+  // highlight current tier
+  VIP_LEVELS.forEach(l=>{
+    const el=document.getElementById('vipCard-'+l.name.toLowerCase());
+    if(!el)return;
+    el.classList.toggle('current',l.name===lv.name);
+    const badge=el.querySelector('.vip-current-badge');
+    if(badge)badge.remove();
+    if(l.name===lv.name){const b=document.createElement('div');b.className='vip-current-badge';b.textContent='AKTUELL';el.appendChild(b);}
+  });
+}
+
+/* ── PROFILE ── */
+function renderUserAvatar(){
+  const av=document.getElementById('uAv');
+  if(avatarImg){av.innerHTML='<img src="'+avatarImg+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">';av.style.background='none';}
+  else{av.innerHTML=cUser.username[0].toUpperCase();av.style.background='linear-gradient(135deg,'+avatarColor+')';}
+}
+function refreshProfile(){
+  const lv=getVipLevel();
+  const bigAv=document.getElementById('profileAvBig');
+  if(avatarImg){
+    document.getElementById('profileAvText').innerHTML='<img src="'+avatarImg+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">';
+    bigAv.style.background='none';
+  }else{
+    document.getElementById('profileAvText').textContent=cUser.username[0].toUpperCase();
+    bigAv.style.background='linear-gradient(135deg,'+avatarColor+')';
+  }
+  document.getElementById('profileNameBig').textContent=cUser.username||'Spieler';
+  document.getElementById('profileEmailSm').textContent='@'+cUser.username;
+  document.getElementById('profileVipBadge').textContent=lv.icon+' '+lv.name;
+  document.getElementById('statGames').textContent=totalGames;
+  document.getElementById('statWins').textContent=totalWins;
+  document.getElementById('statBal').textContent=fmt(bal);
+  document.getElementById('statVip').textContent=vipPts;
+  document.getElementById('pfUser').value=cUser.username||'';
+  document.getElementById('pfBio').value=cUser.bio||'';
+  document.querySelectorAll('.avatar-color-opt').forEach(o=>{
+    o.style.border=o.dataset.c===avatarColor?'2px solid var(--gold2)':'2px solid transparent';
+  });
+  renderHistory();
+}
+function saveProfile(){
+  cUser.username=document.getElementById('pfUser').value.trim()||cUser.username;
+  cUser.bio=document.getElementById('pfBio').value.trim();
+  renderUserAvatar();
+  document.getElementById('uNm').textContent=cUser.username||'Spieler';
+  persistData();showToast('✓ Profil gespeichert!');refreshProfile();
+}
+function uploadAvatar(){
+  const input=document.createElement('input');input.type='file';input.accept='image/*';
+  input.onchange=function(e){
+    const file=e.target.files[0];if(!file)return;
+    const reader=new FileReader();
+    reader.onload=function(ev){
+      avatarImg=ev.target.result;
+      renderUserAvatar();
+      persistData();showToast('✓ Profilbild gespeichert!');refreshProfile();
+    };reader.readAsDataURL(file);
+  };input.click();
+}
+function removeAvatar(){avatarImg=null;renderUserAvatar();persistData();showToast('✓ Profilbild entfernt');refreshProfile();}
+function savePw(){
+  const np=document.getElementById('pfPwNew').value,nc=document.getElementById('pfPwConf').value;
+  if(!np){showToast('Kein Passwort eingegeben','#c0392b');return;}
+  if(np.length<8){showToast('Min. 8 Zeichen erforderlich','#c0392b');return;}
+  if(np!==nc){showToast('Passwörter stimmen nicht überein','#c0392b');return;}
+  cUser.pw=np;document.getElementById('pfPwNew').value='';document.getElementById('pfPwConf').value='';
+  showToast('✓ Passwort geändert!');
+}
+function pickColor(el){
+  avatarColor=el.dataset.c;avatarImg=null;
+  document.getElementById('profileAvBig').style.background='linear-gradient(135deg,'+avatarColor+')';
+  renderUserAvatar();
+  document.querySelectorAll('.avatar-color-opt').forEach(o=>{o.style.border=o.dataset.c===avatarColor?'2px solid var(--gold2)':'2px solid transparent';});
+  persistData();
+}
+function changeAvatar(){/* color picker already visible below avatar */}
+function renderHistory(){
+  const el=document.getElementById('historyList');
+  if(!gameHistory.length){el.innerHTML='<div style="font-size:12px;color:rgba(255,255,255,0.2);text-align:center;padding:12px 0;">Noch keine Spiele</div>';return;}
+  el.innerHTML=gameHistory.map(h=>`<div class="ph-row">
+    <span class="ph-game">${h.game}</span>
+    <span class="ph-bet">${fmt(h.bet)}</span>
+    <span class="ph-win ${h.win>=0?'pos':'neg'}">${h.win>=0?'+':''}${fmt(h.win)}</span>
+    <span class="ph-date">${h.date}</span>
+  </div>`).join('');
+}
+
+/* ── FORMAT ── */
+function fmt(n){return '⚡ '+Math.round(n).toLocaleString('de-DE');}
+
+/* ── AUTH ── */
+function switchTab(t){
+  document.getElementById('formL').style.display=t==='L'?'block':'none';
+  document.getElementById('formR').style.display=t==='R'?'block':'none';
+  document.getElementById('tabL').classList.toggle('active',t==='L');
+  document.getElementById('tabR').classList.toggle('active',t==='R');
+  document.getElementById('bonusStrip').style.display=t==='L'?'flex':'none';
+}
+function togglePw(id,btn){const i=document.getElementById(id);i.type=i.type==='password'?'text':'password';btn.textContent=i.type==='password'?'👁':'🙈';}
+function chkStr(pw){
+  const f=document.getElementById('strFill');let s=0;
+  if(pw.length>=8)s++;if(/[A-Z]/.test(pw))s++;if(/[0-9]/.test(pw))s++;if(/[^A-Za-z0-9]/.test(pw))s++;
+  const c=['#c0392b','#e67e22','#f5c518','#27ae60'];const w=['25%','50%','75%','100%'];
+  f.style.width=pw.length?w[s-1]||'10%':'0';f.style.background=pw.length?c[s-1]||'#c0392b':'';
+}
+function doLogin(){
+  const u=document.getElementById('lUser').value.trim(),p=document.getElementById('lPw').value,err=document.getElementById('errL');
+  if(!u||!p){err.textContent='Bitte alle Felder ausfüllen.';err.classList.add('show');return;}
+  const found=USERS.find(x=>x.username===u&&x.pw===p);
+  if(!found){err.textContent='Benutzername oder Passwort falsch';err.classList.add('show');return;}
+  err.classList.remove('show');cUser=found;launch();
+}
+function socialLogin(){cUser={pw:'',username:'SocialUser'};launch();}
+function doReg(){
+  const u=document.getElementById('rUser').value.trim();
+  const p=document.getElementById('rPw').value;
+  const t=document.getElementById('termsC').checked;
+  const err=document.getElementById('errR'),suc=document.getElementById('sucR');
+  err.classList.remove('show');suc.classList.remove('show');
+  if(!u||!p){err.textContent='Bitte alle Felder ausfüllen.';err.classList.add('show');return;}
+  if(p.length<8){err.textContent='Passwort muss mindestens 8 Zeichen haben.';err.classList.add('show');return;}
+  if(!t){err.textContent='Bitte AGB akzeptieren.';err.classList.add('show');return;}
+  if(USERS.find(x=>x.username===u)){err.textContent='Benutzername bereits vergeben.';err.classList.add('show');return;}
+  const nu={pw:p,username:u};USERS.push(nu);
+  suc.textContent='Konto erstellt! Willkommensbonus aktiviert! Du wirst eingeloggt…';suc.classList.add('show');
+  setTimeout(()=>{cUser=nu;launch();},1400);
+}
+function launch(){
+  document.getElementById('authWrap').style.display='none';
+  document.getElementById('casinoApp').style.display='block';
+  bal=0;vipPts=0;totalGames=0;totalWins=0;gameHistory=[];avatarColor='#7c3aed,#a855f7';avatarImg=null;
+  loanDebt=0;loanDeadline=null;loanCount=0;totalInterestPaid=0;
+  if(loanTimerInterval){clearInterval(loanTimerInterval);loanTimerInterval=null;}
+  if(sessionTimerInterval){clearInterval(sessionTimerInterval);sessionTimerInterval=null;}
+  sessionStart=Date.now();
+  startSessionTimer();
+  loadData();
+  renderUserAvatar();
+  document.getElementById('uNm').textContent=cUser.username||'Spieler';
+  updBal();showPage('games');renderGames('all');startTickers();
+  if(loanDebt>0 && loanDeadline && loanDeadline > Date.now()){
+    startDebtTimer();
+    setTimeout(()=>openLoanshark(), 600);
+  } else if(loanDebt>0){
+    triggerGameOver();
+  } else {
+    setTimeout(()=>openLoanshark(), 600);
+  }
+}
+
+function startSessionTimer(){
+  if(sessionTimerInterval) clearInterval(sessionTimerInterval);
+  sessionTimerInterval = setInterval(()=>{
+    // update nav-right with live session time
+    const el=document.getElementById('sessionTimeDisp');
+    if(el && sessionStart){
+      const s=Math.floor((Date.now()-sessionStart)/1000);
+      el.textContent=Math.floor(s/60)+':'+(s%60<10?'0':'')+s%60;
+    }
+  },1000);
+}
+function doLogout(){
+  persistData();
+  document.getElementById('casinoApp').style.display='none';
+  document.getElementById('authWrap').style.display='flex';
+  document.getElementById('uDD').classList.remove('open');
+  cUser=null;
+}
+function doDeposit(){ openLoanshark(); } // disabled – redirect to loanshark
+
+// Notfall-Kredit-Angebote (bei laufendem Kredit): mehr Zinsen, weniger Zeit
+const EMERGENCY_LOAN_OFFERS=[
+  {amount:500,   extraRepay:1100,  timeCut:2, label:'120% Zinsen – NOTFALL'},
+  {amount:2000,  extraRepay:5400,  timeCut:3, label:'170% Zinsen – NOTFALL'},
+  {amount:5000,  extraRepay:15000, timeCut:4, label:'200% Zinsen – KRITISCH'},
+];
+
+// Berechne eskalierende Kredit-Angebote basierend auf wie viele Kredite bereits genommen wurden
+function getEscalatedOffers(){
+  // Basis: loanCount skaliert Zinsen. Jeder Kredit macht es teurer.
+  const scale = Math.pow(1.45, loanCount); // 45% Eskalation pro Kredit
+  return [
+    {
+      amount: 500,
+      repay: Math.round(900 * scale),
+      minutes: Math.max(3, 10 - loanCount),
+      label: `${Math.round((Math.round(900*scale)/500-1)*100)}% Zinsen${loanCount>0?' – Kredit #'+(loanCount+1):''}`,
+    },
+    {
+      amount: 2000,
+      repay: Math.round(4200 * scale),
+      minutes: Math.max(3, 8 - loanCount),
+      label: `${Math.round((Math.round(4200*scale)/2000-1)*100)}% Zinsen${loanCount>0?' – Kredit #'+(loanCount+1):''}`,
+    },
+    {
+      amount: 5000,
+      repay: Math.round(12500 * scale),
+      minutes: Math.max(3, 6 - loanCount),
+      label: `${Math.round((Math.round(12500*scale)/5000-1)*100)}% Zinsen${loanCount>0?' – Kredit #'+(loanCount+1):''}`,
+    },
+    {
+      amount: 15000,
+      repay: Math.round(52500 * scale),
+      minutes: Math.max(3, 5 - loanCount),
+      label: `${Math.round((Math.round(52500*scale)/15000-1)*100)}% Zinsen – ${loanCount>2?'💀 RUINÖS':'Lebensgefährlich'}`,
+    },
+  ];
+}
+
+function openLoanshark(mandatory){
+  const isMandatory = mandatory || loanDebt === 0; // Kein Kredit aktiv = immer Pflicht
+
+  // Zitate
+  const quotesNew = [
+    `"Willkommen. Du hast keinen Kredit, also kannst du nicht spielen. Einfache Sache, Freund."`,
+    `"Kein Geld, keine Freiheit. Aber ich kann helfen – natürlich für einen kleinen Gefallen."`,
+    `"Kredit #${loanCount+1}. Ich dachte, du lernst irgendwann. Aber nein. Gut für mich."`,
+  ];
+  const quotesDebt = [
+    `"Du schon wieder? Interessant. Ich mag mutige Männer – oder verzweifelte."`,
+    `"Noch mehr Schulden? Na gut. Aber die Uhr tickt schneller jetzt, Freund."`,
+    `"Du lebst gefährlich. Mein Preis steigt auch. Kredit #${loanCount+1} ist teurer."`,
+  ];
+  const quotesForced = [
+    `"Du hast bezahlt. Gut. Aber wir sind noch nicht fertig. Kredit #${loanCount+1} wartet auf dich."`,
+    `"Schuldenfrei? Kurz nur. Das Spiel hört nie auf, Freund. Nimm den nächsten Kredit."`,
+    `"Ich mag dich. Deshalb gebe ich dir immer wieder Kredit. Ob du willst oder nicht."`,
+  ];
+
+  // Pflicht-Kredit nach Rückzahlung → spezielle Zitate
+  const isAfterRepay = (mandatory === 'afterRepay');
+  const quotes = isAfterRepay ? quotesForced : (loanDebt > 0 ? quotesDebt : quotesNew);
+  document.getElementById('lsQuote').textContent = quotes[Math.floor(Math.random()*quotes.length)];
+
+  const offersEl = document.getElementById('lsOffers');
+  const skipEl = document.getElementById('lsSkipBtn');
+  const warnEl = document.getElementById('lsWarnText');
+
+  if(loanDebt > 0){
+    // Notfall-Kredit bei laufenden Schulden
+    const remaining = loanDeadline ? Math.max(0, Math.floor((loanDeadline - Date.now())/60000)) : 0;
+    const remainingMs = loanDeadline ? Math.max(0, loanDeadline - Date.now()) : 0;
+    offersEl.innerHTML = `
+      <div style="background:rgba(192,57,43,0.15);border:1px solid rgba(192,57,43,0.4);border-radius:4px;padding:10px 14px;margin-bottom:10px;font-size:12px;color:rgba(255,180,180,0.8);line-height:1.6;">
+        ⚠ <strong style="color:#e74c3c;">Offene Schulden: ${fmt(loanDebt)}</strong> · Verbleibende Zeit: <strong style="color:#fff;">${remaining} Min.</strong><br>
+        <span style="font-size:11px;color:rgba(255,120,120,0.7);">Zusätzliche Kredite verkürzen deine Zeit und erhöhen die Zinsen!</span>
+      </div>
+      ${EMERGENCY_LOAN_OFFERS.map((o,i)=>{
+        const fatal = (o.timeCut * 60 * 1000) >= remainingMs;
+        return `
+      <div class="ls-offer" onclick="takeEmergencyLoan(${i})" style="border-color:rgba(${fatal?'255,50,50':'231,76,60'},${fatal?'0.9':'0.5'});background:rgba(${fatal?'200,0,0':'231,76,60'},${fatal?'0.18':'0.06'});">
+        <div class="ls-offer-amount" style="color:#e74c3c;">⚡ ${o.amount.toLocaleString('de-DE')} Notfall-Kredit</div>
+        <div class="ls-offer-detail">Schulden steigen um: ${fmt(o.extraRepay)} · Zeit sinkt um: <strong style="color:#e74c3c;">${o.timeCut} Min.</strong></div>
+        <div class="ls-offer-danger">💀 ${o.label}</div>
+        ${fatal ? '<div style="font-size:11px;color:#ff4444;font-weight:800;margin-top:4px;letter-spacing:0.5px;">☠ SOFORTIGES GAME OVER – Zeit reicht nicht aus!</div>' : ''}
+      </div>`;
+      }).join('')}`;
+    warnEl.innerHTML = '⚠ <strong style="color:#e74c3c">Jeder weitere Kredit erhöht deine Schulden und verkürzt deine Zeit!</strong> Die Spirale dreht sich immer schneller.';
+    // Bei laufenden Schulden KANN man ablehnen (nur Notfall-Kredit optional)
+    skipEl.style.display = '';
+    skipEl.textContent = 'Kein weiterer Kredit – zurück';
+  } else {
+    // Normaler / Pflicht-Kredit mit eskalierten Zinsen
+    const offers = getEscalatedOffers();
+    offersEl.innerHTML = offers.map((o,i)=>{
+      const isPurple = i===3;
+      const dangerColor = loanCount>=2 ? '#e74c3c' : (isPurple ? '#a855f7' : '');
+      return `<div class="ls-offer" onclick="takeLoan(${i})" ${isPurple?`style="border-color:rgba(${loanCount>=2?'231,76,60':'168,85,247'},0.5);background:rgba(${loanCount>=2?'231,76,60':'168,85,247'},0.08);"`:''}>
+        <div class="ls-offer-amount" ${dangerColor?`style="color:${dangerColor};"`:''}>⚡ ${o.amount.toLocaleString('de-DE')} Blitze</div>
+        <div class="ls-offer-detail">Rückzahlung: ${fmt(o.repay)} · Laufzeit: <strong style="color:#fff">${o.minutes} Minuten</strong></div>
+        <div class="ls-offer-danger" ${dangerColor?`style="color:${dangerColor};"`:''}>⚠ ${o.label}</div>
+      </div>`;
+    }).join('');
+
+    if(loanCount > 0){
+      warnEl.innerHTML = `⚠ <strong style="color:#e74c3c">Kredit #${loanCount+1} – Zinsen sind gestiegen!</strong> Es gibt keinen Ausweg. Wähle deinen nächsten Kredit.`;
+    } else {
+      warnEl.innerHTML = '⚠ Achtung: Wenn du nicht rechtzeitig zurückzahlst, behalten wir alles was du hast. <strong style="color:#e74c3c">Keine Ausnahmen.</strong>';
+    }
+
+    // Ablehnen NICHT möglich bei Pflichtkredit (kein aktiver Kredit = Pflicht)
+    skipEl.style.display = 'none';
+  }
+
+  document.getElementById('lsModal').style.display='flex';
+}
+
+function takeEmergencyLoan(idx){
+  const offer = EMERGENCY_LOAN_OFFERS[idx];
+  const newDebt = loanDebt + offer.extraRepay;
+  const timeCutMs = offer.timeCut * 60 * 1000;
+  const newDeadline = loanDeadline - timeCutMs;
+  const newRemaining = Math.max(0, Math.floor((newDeadline - Date.now())/60000));
+
+  // Prüfen ob der Zeitabzug die verbleibende Zeit überschreitet → sofortiges Game Over
+  if(newDeadline <= Date.now()){
+    const confirmed = confirm(
+      `💀 WARNUNG: ZEIT ÜBERSCHRITTEN\n\n` +
+      `Dieser Kredit zieht ${offer.timeCut} Minuten ab – mehr als du noch hast!\n` +
+      `Das Spiel endet SOFORT wenn du annimmst.\n\n` +
+      `Trotzdem annehmen?`
+    );
+    if(!confirmed) return;
+    closeLoanshark();
+    loanDebt = newDebt;
+    persistData();
+    triggerGameOver();
+    return;
+  }
+
+  const confirmed = confirm(
+    `💀 NOTFALL-KREDIT AUFNEHMEN\n\n` +
+    `Du erhältst: ⚡${offer.amount.toLocaleString('de-DE')}\n` +
+    `Deine Schulden steigen auf: ⚡${newDebt.toLocaleString('de-DE')}\n` +
+    `Verbleibende Zeit sinkt um ${offer.timeCut} Minuten!\n` +
+    `Neue verbleibende Zeit: ca. ${newRemaining} Min.\n\n` +
+    `Das ist sehr riskant. Wirklich annehmen?`
+  );
+  if(!confirmed) return;
+
+  bal += offer.amount;
+  loanDebt = newDebt;
+  loanDeadline = newDeadline;
+  updBal();
+  persistData();
+  closeLoanshark();
+  // Track interest: extraRepay contains the full debt increase (which is pure interest/penalty)
+  totalInterestPaid += offer.extraRepay;
+  // Timer läuft bereits – wird automatisch die neue Deadline nutzen
+  showToast(`🦈 Notfall-Kredit! +⚡${offer.amount.toLocaleString('de-DE')} – aber Zeit & Zinsen stiegen!`, '#c0392b');
+}
+
+function closeLoanshark(){
+  document.getElementById('lsModal').style.display='none';
+}
+
+function takeLoan(idx){
+  if(loanDebt > 0){showToast('Erst bestehende Schulden begleichen!','#c0392b');return;}
+  const offers = getEscalatedOffers();
+  const offer = offers[idx];
+  bal += offer.amount;
+  loanDebt = offer.repay;
+  loanDeadline = Date.now() + offer.minutes * 60 * 1000;
+  loanCount++;
+  const _loanInterest = offer.repay - offer.amount;
+  totalInterestPaid += _loanInterest;
+  const lcd=document.getElementById('loanCountDisp');if(lcd)lcd.textContent=loanCount;
+  updBal();
+  persistData();
+  closeLoanshark();
+  startDebtTimer();
+  showToast(`🦈 ⚡${offer.amount.toLocaleString('de-DE')} erhalten. ${offer.minutes} Min. zum Zurückzahlen! (Runde ${loanCount})`,'#c0392b');
+}
+
+function startDebtTimer(){
+  const bar = document.getElementById('debtBar');
+  bar.style.display = 'flex';
+  if(loanTimerInterval) clearInterval(loanTimerInterval);
+  loanTimerInterval = setInterval(()=>{
+    const remaining = loanDeadline - Date.now();
+    if(remaining <= 0){
+      clearInterval(loanTimerInterval);loanTimerInterval=null;
+      triggerGameOver();
+      return;
+    }
+    const mins = Math.floor(remaining/60000);
+    const secs = Math.floor((remaining%60000)/1000);
+    const timerEl = document.getElementById('debtTimerDisp');
+    const timeStr = mins+':'+(secs<10?'0':'')+secs;
+    timerEl.textContent = timeStr;
+    document.getElementById('debtAmountDisp').textContent = fmt(loanDebt);
+    // urgent styling under 60 seconds
+    if(remaining < 60000){
+      bar.classList.add('urgent');
+      timerEl.classList.add('red','blink');
+    } else if(remaining < 120000){
+      timerEl.classList.add('red');
+      timerEl.classList.remove('blink');
+    }
+    // sync repay modal if open
+    if(document.getElementById('repayModal').style.display!=='none'){
+      document.getElementById('repayTimeDisp').textContent='Verbleibende Zeit: '+timeStr;
+    }
+  }, 250);
+}
+
+function openRepayModal(){
+  document.getElementById('repayAmountDisp').textContent = fmt(loanDebt);
+  document.getElementById('repayBalInfo').textContent = 'Dein Guthaben: '+fmt(bal)+(bal>=loanDebt?' ✓':' — Nicht genug!');
+  const remaining = loanDeadline - Date.now();
+  const mins = Math.floor(remaining/60000), secs = Math.floor((remaining%60000)/1000);
+  document.getElementById('repayTimeDisp').textContent='Verbleibende Zeit: '+mins+':'+(secs<10?'0':'')+secs;
+  const q=bal>=loanDebt
+    ? ['"Endlich. Ich war schon ungeduldig."','"Pünktlich. Das respektiere ich. Fast."']
+    : ['"Du hast nicht genug... Das ist ein Problem."','"Ich mag keine Probleme. Du auch nicht, oder?"'];
+  document.getElementById('repayQuote').textContent=q[Math.floor(Math.random()*q.length)];
+  document.getElementById('repayModal').style.display='flex';
+}
+
+function closeRepayModal(){
+  document.getElementById('repayModal').style.display='none';
+}
+
+function confirmRepay(){
+  if(bal < loanDebt){
+    showToast('Nicht genug Guthaben zum Zurückzahlen! Spiel mehr!','#c0392b');
+    closeRepayModal();
+    return;
+  }
+  bal -= loanDebt;
+  const paidBack = loanDebt;
+  loanDebt = 0;
+  loanDeadline = null;
+  if(loanTimerInterval){clearInterval(loanTimerInterval);loanTimerInterval=null;}
+  document.getElementById('debtBar').style.display='none';
+  updBal();persistData();
+  closeRepayModal();
+  showToast(`✓ ${fmt(paidBack)} zurückgezahlt. Big Samo holt sich den nächsten Kredit...`,'#7c1a1a');
+  // PFLICHT: Nach Rückzahlung sofort neuen Kredit erzwingen (mit höheren Zinsen)
+  setTimeout(()=>openLoanshark('afterRepay'), 1800);
+}
+
+function fmtTime(ms){const s=Math.floor(ms/1000);return Math.floor(s/60)+':'+(s%60<10?'0':'')+s%60;}
+
+function getRank(round){
+  if(round>=20) return {label:'👑 LEGENDE',color:'#a855f7',bg:'rgba(168,85,247,0.15)'};
+  if(round>=12) return {label:'💎 DIAMANT',color:'#38bdf8',bg:'rgba(56,189,248,0.1)'};
+  if(round>=8)  return {label:'🥇 GOLD',color:'var(--gold2)',bg:'rgba(212,168,67,0.1)'};
+  if(round>=5)  return {label:'🥈 SILBER',color:'#e0e0e0',bg:'rgba(200,200,200,0.08)'};
+  if(round>=3)  return {label:'🥉 BRONZE',color:'#cd7f32',bg:'rgba(205,127,50,0.1)'};
+  return {label:'💸 ANFÄNGER',color:'rgba(255,255,255,0.3)',bg:'rgba(255,255,255,0.04)'};
+}
+
+// Gespeicherte Score-Daten für den Score-Screen
+let _lastRound=0, _lastElapsed=0, _lastDebt=0, _lastIsNew=false;
+
+function saveLeaderboardEntry(username, elapsed, interest){
+  const lbKey='casino_leaderboard';
+  let lb=[];
+  try{const raw=localStorage.getItem(lbKey);if(raw)lb=JSON.parse(raw);}catch(e){}
+  // Update or add this player's best interest paid
+  const idx=lb.findIndex(e=>e.name===username);
+  if(idx>=0){
+    if(interest>lb[idx].interest) lb[idx]={name:username,time:elapsed,interest:interest,ts:Date.now()};
+  } else {
+    lb.push({name:username,time:elapsed,interest:interest,ts:Date.now()});
+  }
+  // Sort by interest descending
+  lb.sort((a,b)=>b.interest-a.interest);
+  try{localStorage.setItem(lbKey,JSON.stringify(lb));}catch(e){}
+  return lb;
+}
+function loadLeaderboard(){
+  try{const raw=localStorage.getItem('casino_leaderboard');return raw?JSON.parse(raw):[];}catch(e){return [];}
+}
+
+function triggerGameOver(){
+  stopAuto();
+  if(loanTimerInterval){clearInterval(loanTimerInterval);loanTimerInterval=null;}
+  const debt=loanDebt;
+  const round=loanCount;
+  const elapsed=sessionStart ? Date.now()-sessionStart : 0;
+
+  // Leaderboard speichern
+  const username=cUser?cUser.username:'Gast';
+  const lb=saveLeaderboardEntry(username, elapsed, totalInterestPaid);
+
+  // Persönlichen Bestrekord prüfen
+  const myBest=lb.find(e=>e.name===username);
+  const isNew=myBest && myBest.interest===totalInterestPaid && totalInterestPaid>0;
+
+  // Für Score-Screen merken
+  _lastRound=round; _lastElapsed=elapsed; _lastDebt=debt; _lastIsNew=isNew;
+
+  // Spielstand zurücksetzen
+  bal=0;vipPts=0;loanDebt=0;loanDeadline=null;loanCount=0;
+  updBal();persistData();
+  document.getElementById('debtBar').style.display='none';
+  closeGame();closeRepayModal();closeLoanshark();
+
+  // Klassischer Game Over Screen
+  document.getElementById('goDebtAmt').textContent=fmt(totalInterestPaid);
+  const msgs=[
+    '"Du hattest deine Chance. Jetzt gehört alles mir – dein Guthaben, deine VIP-Punkte, alles." — Big Samo 🦈',
+    '"Schulden haben eine Ablaufzeit. Deine ist abgelaufen." — Big Samo 🦈',
+    '"Ich habe Geduld. Aber nicht unendlich. Ciao, Freund." — Big Samo 🦈',
+  ];
+  document.getElementById('goMsg').textContent=msgs[Math.floor(Math.random()*msgs.length)];
+  document.getElementById('goSubText').textContent='Die Zeit ist abgelaufen. Big Samo ist nicht erfreut.';
+  document.getElementById('gameOverScreen').style.display='flex';
+  document.getElementById('scoreScreen').style.display='none';
+}
+
+function showScoreScreen(){
+  // Game Over ausblenden, Score-Screen einblenden
+  document.getElementById('gameOverScreen').style.display='none';
+
+  const elapsed=_lastElapsed, debt=_lastDebt, isNew=_lastIsNew;
+  document.getElementById('goTimeAmt').textContent='⚡ '+fmt(totalInterestPaid);
+  document.getElementById('goDebtAtCrash').textContent=fmt(debt);
+
+  // Rank basierend auf gezahlten Zinsen (statt Zeit)
+  function getRankByTime(interest){
+    if(interest>=50000) return {label:'👑 LEGENDE',color:'#a855f7',bg:'rgba(168,85,247,0.15)'};
+    if(interest>=20000) return {label:'💎 DIAMANT',color:'#38bdf8',bg:'rgba(56,189,248,0.1)'};
+    if(interest>=8000)  return {label:'🥇 GOLD',color:'var(--gold2)',bg:'rgba(212,168,67,0.1)'};
+    if(interest>=3000)  return {label:'🥈 SILBER',color:'#e0e0e0',bg:'rgba(200,200,200,0.08)'};
+    if(interest>=1000)  return {label:'🥉 BRONZE',color:'#cd7f32',bg:'rgba(205,127,50,0.1)'};
+    return {label:'💸 ANFÄNGER',color:'rgba(255,255,255,0.3)',bg:'rgba(255,255,255,0.04)'};
+  }
+  const rank=getRankByTime(totalInterestPaid);
+  const badge=document.getElementById('goRankBadge');
+  badge.textContent=rank.label;badge.style.color=rank.color;
+  badge.style.background=rank.bg;badge.style.border='1px solid '+rank.color;
+
+  document.getElementById('goTitle').textContent=isNew?'🏆 NEUER REKORD!':'DEIN ERGEBNIS';
+  document.getElementById('goScoreSub').textContent=isNew
+    ?'Persönlicher Rekord! Kannst du dich selbst schlagen?'
+    :'Big Samo hat alles kassiert. Wie lange hältst du beim nächsten Mal durch?';
+
+  const scoreMsgs=[
+    `"⚡ ${fmt(totalInterestPaid)} Zinsen gezahlt. Nicht schlecht – für jemanden ohne Zukunft." — Big Samo 🦈`,
+    `"⚡ ${fmt(totalInterestPaid)} in Zinsen. Beeindruckend. Aber ich gewinne immer." — Big Samo 🦈`,
+    `"Du hast ⚡ ${fmt(totalInterestPaid)} Zinsen bezahlt. Das nächste Mal vielleicht mehr?" — Big Samo 🦈`,
+  ];
+  document.getElementById('goScoreMsg').textContent=scoreMsgs[Math.floor(Math.random()*scoreMsgs.length)];
+
+  // Leaderboard rendern
+  const lb=loadLeaderboard();
+  const myName=cUser?cUser.username:'Gast';
+  const lbEl=document.getElementById('lbList');
+  if(!lb.length){
+    lbEl.innerHTML='<div style="padding:14px;text-align:center;font-size:12px;color:rgba(255,255,255,0.25);">Noch keine Einträge</div>';
+  } else {
+    lbEl.innerHTML=lb.slice(0,10).map((entry,i)=>{
+      const isMe=entry.name===myName;
+      const medal=i===0?'🥇':i===1?'🥈':i===2?'🥉':`#${i+1}`;
+      const bg=isMe?'rgba(212,168,67,0.08)':'';
+      const border=isMe?'border-left:2px solid var(--gold2);':'border-left:2px solid transparent;';
+      const interestVal=entry.interest!=null?entry.interest:(entry.time||0);
+      return `<div style="display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid rgba(255,255,255,0.04);background:${bg};${border}font-size:13px;">
+        <span style="font-size:1rem;min-width:28px;text-align:center;">${medal}</span>
+        <span style="flex:1;font-weight:${isMe?700:500};color:${isMe?'var(--gold2)':'rgba(255,255,255,0.75)'};">${entry.name}</span>
+        <span style="font-family:'Oswald',sans-serif;font-size:1rem;color:${isMe?'#a855f7':'rgba(255,255,255,0.5)'};">⚡ ${fmt(interestVal)}</span>
+      </div>`;
+    }).join('');
+  }
+
+  document.getElementById('scoreScreen').style.display='flex';
+}
+
+function restartAfterGameOver(){
+  document.getElementById("gameOverScreen").style.display="none";
+  document.getElementById("scoreScreen").style.display="none";
+  document.getElementById("casinoApp").style.display="none";
+  document.getElementById("authWrap").style.display="flex";
+  cUser=null;
+  bal=0;vipPts=0;totalGames=0;totalWins=0;gameHistory=[];
+  loanDebt=0;loanDeadline=null;loanCount=0;totalInterestPaid=0;
+  if(loanTimerInterval){clearInterval(loanTimerInterval);loanTimerInterval=null;}
+  if(sessionTimerInterval){clearInterval(sessionTimerInterval);sessionTimerInterval=null;}
+}
+
+
+
+
+
+
+
+
+
+
+function updBal(){
+  document.getElementById('balVal').textContent=fmt(bal);
+  if(document.getElementById('statBal'))document.getElementById('statBal').textContent=fmt(bal);
+  // Wenn Guthaben auf 0 fällt → Kreditfenster öffnen (nur wenn kein Game Over und kein aktiver Kredit läuft)
+  if(bal<=0 && loanDebt===0 && document.getElementById('gameOverScreen').style.display==='none'){
+    clearTimeout(window._brokeTimer);
+    window._brokeTimer = setTimeout(()=>{
+      if(bal<=0 && loanDebt===0 && document.getElementById('gameOverScreen').style.display==='none'){
+        showToast('💸 Pleite! Big Samo erwartet dich...','#c0392b');
+        setTimeout(()=>openLoanshark(), 1200);
+      }
+    }, 800);
+  }
+}
+function toggleDD(){document.getElementById('uDD').classList.toggle('open');}
+document.addEventListener('click',e=>{const b=document.querySelector('.user-btn');if(b&&!b.contains(e.target))document.getElementById('uDD').classList.remove('open');});
+function setNav(el){document.querySelectorAll('.nav-link').forEach(n=>n.classList.remove('active'));el.classList.add('active');}
+function sbNav(el,cat){document.querySelectorAll('.sb-item').forEach(s=>s.classList.remove('active'));el.classList.add('active');filterG(cat,null);}
+function filterG(cat,btn){
+  if(btn){document.querySelectorAll('.cat-btn').forEach(c=>c.classList.remove('active'));btn.classList.add('active');}
+  showPage('games');renderGames(cat);
+}
+function getVipLevel(){
+  let lvl=0;
+  for(let i=VIP_LEVELS.length-1;i>=0;i--){if(vipPts>=VIP_LEVELS[i].pts){lvl=i;break;}}
+  return lvl;
+}
+function showVipLockMsg(gameName,reqName){
+  let existing=document.getElementById('vipLockToast');
+  if(existing)existing.remove();
+  const d=document.createElement('div');
+  d.id='vipLockToast';d.className='vip-lock-toast';
+  d.innerHTML=`<div class="vlt-icon">🔒</div><div class="vlt-title">Gesperrt</div><div class="vlt-text"><strong style="color:#fff">${gameName}</strong> ist ab <strong style="color:#a855f7">${reqName} VIP</strong> verfügbar.<br>Sammle mehr VIP-Punkte beim Spielen!</div><button class="vlt-close" onclick="this.parentElement.remove()">OK, verstanden</button>`;
+  document.body.appendChild(d);
+  setTimeout(()=>{if(d.parentElement)d.remove();},4000);
+}
+function renderGames(cat){
+  const grid=document.getElementById('gGrid');grid.innerHTML='';
+  const filtered=cat==='all'?GAMES:GAMES.filter(g=>g.cat.includes(cat));
+  const curVip=getVipLevel();
+  filtered.forEach((g,_)=>{
+    const idx=GAMES.indexOf(g);
+    const locked=(g.vipReq||0)>curVip;
+    const reqName=VIP_LEVELS[g.vipReq||0]?VIP_LEVELS[g.vipReq||0].name:'Bronze';
+    const badge=locked
+      ?`<span class="badge badge-locked">🔒 ${reqName}</span>`
+      :(g.hot?'<span class="badge badge-hot">HOT</span>':(g.newG?'<span class="badge badge-new">NEU</span>':''));
+    const lockOverlay=locked?`<div class="g-lock-overlay"><div class="g-lock-icon">🔒</div><div class="g-lock-label">${reqName}<br>VIP erforderlich</div></div>`:'';
+    const hoverOverlay=locked?'':`<div class="g-overlay"><button class="g-play" onclick="event.stopPropagation();openSlot(${idx})">Spielen</button><button class="g-demo" onclick="event.stopPropagation();openSlot(${idx})">Demo</button></div>`;
+    const riskColor={'Niedrig':'#27ae60','Mittel':'#f0c060','Hoch':'#e67e22','Sehr Hoch':'#e74c3c','Extrem':'#a855f7'}[g.risk||'Mittel']||'#aaa';
+    const _gsize = VIP_GRID[g.vipReq||0];
+    const _glines = getPaylines(_gsize.rows, _gsize.cols).length;
+    grid.innerHTML+=`<div class="g-card${locked?' locked':''}" onclick="openSlot(${idx})">
+      <div class="g-thumb ${g.bg}"><div class="g-thumb-inner" style="${locked?'opacity:0.3;filter:grayscale(1)':''}">${g.e}</div>${badge}${lockOverlay}${hoverOverlay}
+      </div>
+      <div class="g-info">
+        <div class="g-name" style="${locked?'color:rgba(255,255,255,0.3)':''}">${g.n}</div>
+        <div class="g-meta"><span class="g-provider">${g.prov}</span><span class="g-rtp" style="${locked?'color:rgba(255,255,255,0.2)':''}">${locked?'Gesperrt':g.rtp}</span></div>
+        ${!locked?`<div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px;font-size:10px;"><span style="color:${riskColor};font-weight:700;">⚠ ${g.risk||''}</span><span style="color:var(--gold);font-weight:700;">Max ${g.maxWin||''}</span></div><div style="font-size:9px;color:rgba(255,255,255,0.3);margin-top:2px;letter-spacing:0.3px;">Feld: <strong style="color:rgba(255,255,255,0.5);">${_gsize.rows}×${_gsize.cols}</strong> · ${_glines} Linien · ⚡${g.minBet||1}–⚡${g.maxBet||100}</div>`:`<div style="font-size:9px;color:rgba(255,255,255,0.2);margin-top:4px;">Feld: ${_gsize.rows}×${_gsize.cols} · ${_glines} Linien</div>`}
+      </div>
+    </div>`;
+  });
+}
+function openGame(idx){
+  const g=GAMES[idx];
+  const curVip=getVipLevel();
+  if((g.vipReq||0)>curVip){
+    const reqName=VIP_LEVELS[g.vipReq||0]?VIP_LEVELS[g.vipReq||0].name:'Bronze';
+    showVipLockMsg(g.n,reqName);
+    return;
+  }
+  document.getElementById('sTitle').textContent=g.n;
+  stopAuto();
+
+  const name=g.n.toLowerCase().replace(/[^a-z]/g,'');
+
+  if(name==='blackjack'){
+    currentGameType='blackjack';
+    currentGame=g;
+    document.getElementById('uiSlot').style.display='none';
+    document.getElementById('uiBJ').style.display='block';
+    document.getElementById('uiRL').style.display='none';
+    document.getElementById('sInner').style.maxWidth='500px';
+    // Update BJ bet chips
+    const _bjTier=g.vipReq||0;
+    const _bjChips=TIER_CHIPS[_bjTier]||TIER_CHIPS[0];
+    const _bjC=document.getElementById('bjBetChips');
+    if(_bjC){
+      // keep Reset button, rebuild chips
+      const _resetBtn=_bjC.querySelector('[onclick="bjClearBet()"]');
+      _bjC.innerHTML='';
+      _bjChips.forEach(v=>{const b=document.createElement('button');b.className='bet-chip';b.textContent='+⚡'+v;b.onclick=()=>bjAddBet(v);_bjC.appendChild(b);});
+      if(_resetBtn)_bjC.appendChild(_resetBtn);
+    }
+    bjBet=0;bjRenderBet();
+    if(bjDeck.length<20) bjBuildDeck();
+    bjNew();
+  } else if(name==='roulette'){
+    currentGameType='roulette';
+    currentGame=g;
+    document.getElementById('uiSlot').style.display='none';
+    document.getElementById('uiBJ').style.display='none';
+    document.getElementById('uiRL').style.display='block';
+    document.getElementById('sInner').style.maxWidth='640px';
+    // Update roulette chip buttons
+    const _rlTier=g.vipReq||0;
+    const _rlChips=TIER_CHIPS[_rlTier]||TIER_CHIPS[0];
+    const _rlArea=document.getElementById('rlChipArea');
+    if(_rlArea){
+      const _clearBtn=_rlArea.querySelector('[onclick="rlClearBets()"]');
+      _rlArea.innerHTML='';
+      _rlChips.forEach((v,i)=>{const b=document.createElement('button');b.className='bet-chip'+(i===0?' active':'');b.textContent='⚡'+v;b.onclick=()=>rlSetChip(v,b);_rlArea.appendChild(b);});
+      if(_clearBtn)_rlArea.appendChild(_clearBtn);
+    }
+    rlChip=_rlChips[0];
+    document.getElementById('rlChipDisp').textContent='⚡'+rlChip;
+    rlBuildTable();
+    drawWheel(0);
+    rlBets=[];rlUpdateBetList();
+    document.getElementById('rlBallNum').textContent='–';
+    document.getElementById('rlResult').textContent='';
+  } else {
+    currentGameType='slot';
+    document.getElementById('uiSlot').style.display='block';
+    document.getElementById('uiBJ').style.display='none';
+    document.getElementById('uiRL').style.display='none';
+    document.getElementById('sInner').style.maxWidth='580px';
+    // pick config
+    if(name.includes('bookofpharaoh')) currentCfg=GAME_CONFIGS.bookofpharaoh;
+    else if(name.includes('bookofrae')) currentCfg=GAME_CONFIGS.bookofrae;
+    else if(name.includes('alge')) currentCfg=GAME_CONFIGS.alge;
+    else if(name.includes('drehmaschine')) currentCfg=GAME_CONFIGS.drehmaschine;
+    else if(name.includes('schaltung')) currentCfg=GAME_CONFIGS.schaltung;
+    else if(name.includes('fraesmaschine')) currentCfg=GAME_CONFIGS.frasmaschine;
+    else if(name.includes('bohren')) currentCfg=GAME_CONFIGS.bohren;
+    else if(name.includes('sidequests')) currentCfg=GAME_CONFIGS.sidequests;
+    else if(name.includes('programmieren')) currentCfg=GAME_CONFIGS.programmieren;
+    else if(name.includes('feilen')) currentCfg=GAME_CONFIGS.feilen;
+    else if(name.includes('schonwiederfeilen')) currentCfg=GAME_CONFIGS.schonwiederfeilen;
+    else if(name.includes('loeten')) currentCfg=GAME_CONFIGS.loten;
+    else if(name.includes('gravieren')) currentCfg=GAME_CONFIGS.gravieren;
+    else currentCfg=GAME_CONFIGS.slot;
+    currentGame = g;
+    document.getElementById('sRTP').textContent=g.rtp;
+    const _rc={'Niedrig':'#27ae60','Mittel':'#f0c060','Hoch':'#e67e22','Sehr Hoch':'#e74c3c','Extrem':'#a855f7'};
+    const _re=document.getElementById('sRisk');if(_re){_re.textContent=g.risk||'-';_re.style.color=_rc[g.risk]||'#fff';}
+    const _mw=document.getElementById('sMaxWin');if(_mw) _mw.textContent=g.maxWin||'-';
+    const _mb=document.getElementById('sMinBet');if(_mb) _mb.textContent='⚡'+(g.minBet||1)+' – Max ⚡'+(g.maxBet||100);
+    // update grid size info
+    const _gs = VIP_GRID[g.vipReq||0];
+    const _lines = getPaylines(_gs.rows, _gs.cols).length;
+    const _sl = document.getElementById('sLines'); if(_sl) _sl.textContent = _lines;
+    const _sgs = document.getElementById('sGridSize'); if(_sgs) _sgs.textContent = _gs.rows+'×'+_gs.cols;
+    renderBetChips(g);
+    buildSlotGrid(currentCfg);
+    renderSlotGrid(false);
+    buildPT();
+    document.getElementById('wMsg').textContent='Drücke SPIN zum Starten';
+    document.getElementById('wMsg').className='win-msg no-win';
+  }
+  document.getElementById('sModal').classList.add('open');
+}
+function openSlot(idx){openGame(idx);}
+function closeGame(){document.getElementById('sModal').classList.remove('open');stopAuto();}
+function closeSlot(){closeGame();}
+function startTickers(){
+  const jp=[284391,48220,4780,312],ids=['jp0','jp1','jp2','jp3'],inc=[3,2,1,0.5];
+  setInterval(()=>{
+    jp.forEach((v,i)=>{jp[i]+=Math.random()*inc[i];const el=document.getElementById(ids[i]);if(el)el.textContent='⚡ '+Math.round(jp[i]).toLocaleString('de-DE');});
+  },1000);
+}
+document.getElementById('sModal').addEventListener('click',function(e){if(e.target===this)closeGame();});
+renderGames('all');
+</script>
